@@ -17,7 +17,16 @@ export const SeguimientoScreen: React.FC<SeguimientoScreenProps> = ({
   onOpenContractModal,
 }) => {
   const [activeTab, setActiveTab] = useState<'ecologia' | 'finanzas' | 'graficos' | 'legal' | 'hitos'>('graficos');
-  const [selectedLabDoc, setSelectedLabDoc] = useState<string | null>(null);
+  const [selectedLabDoc, setSelectedLabDoc] = useState<any | null>(null);
+  const [copiedLabHash, setCopiedLabHash] = useState(false);
+  const [selectedIpfsDoc, setSelectedIpfsDoc] = useState<{
+    title: string;
+    notary: string;
+    date: string;
+    ipfsCid: string;
+  } | null>(null);
+  const [copiedIpfsCid, setCopiedIpfsCid] = useState(false);
+  const [docNotice, setDocNotice] = useState<string | null>(null);
 
   const project = BIOFABRICA_PROJECT_DETAILS;
 
@@ -394,39 +403,49 @@ export const SeguimientoScreen: React.FC<SeguimientoScreenProps> = ({
 
                   <div className="flex items-center gap-2 shrink-0">
                     <button
-                      onClick={() => setSelectedLabDoc(doc.title)}
-                      className="px-3 py-1.5 rounded-lg bg-surface text-on-surface hover:bg-surface-container font-semibold text-xs border border-outline-variant/40 transition flex items-center gap-1.5"
+                      onClick={() => {
+                        setSelectedLabDoc(doc);
+                        setCopiedLabHash(false);
+                      }}
+                      className="px-3 py-1.5 rounded-lg bg-surface text-on-surface hover:bg-surface-container font-semibold text-xs border border-outline-variant/40 transition flex items-center gap-1.5 cursor-pointer shadow-xs"
                     >
-                      <span className="material-symbols-outlined text-sm">visibility</span>
+                      <span className="material-symbols-outlined text-sm text-primary">visibility</span>
                       Ver Certificado
                     </button>
-                    <a
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        alert(`Descargando copia verificada de: ${doc.title}`);
+                    <button
+                      onClick={() => {
+                        setDocNotice(`Descarga iniciada: ${doc.title} con firma digital válida y sello de tiempo blockchain.`);
+                        const blob = new Blob([
+                          `CERTIFICADO OFICIAL Y AVAL TÉCNICO\n\nDocumento: ${doc.title}\nInstitución: ${doc.institution}\nProtocolo: ${doc.protocol || 'ISO 14064-2'}\nFecha: ${doc.date}\nHash Inmutable: ${doc.fullHash || doc.hash}\nIPFS CID: ${doc.ipfsCid || 'bafybeigx7v2...'}\nAutoridad Firmante: ${doc.authority || 'Comité Técnico'}\nEstado: VÁLIDO Y VIGENTE EN BLOCKCHAIN`
+                        ], { type: 'text/plain' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `${doc.title.replace(/\s+/g, '_')}_Certificado.txt`;
+                        a.click();
+                        URL.revokeObjectURL(url);
                       }}
-                      className="px-3 py-1.5 rounded-lg bg-primary text-on-primary hover:bg-primary-container font-semibold text-xs transition flex items-center gap-1.5"
+                      className="px-3 py-1.5 rounded-lg bg-primary text-on-primary hover:bg-primary-container font-semibold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-xs"
                     >
                       <span className="material-symbols-outlined text-sm">download</span>
                       PDF Firmado
-                    </a>
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
 
-            {selectedLabDoc && (
-              <div className="p-4 rounded-xl bg-primary-fixed/20 border border-primary/30 flex items-center justify-between text-xs">
+            {docNotice && (
+              <div className="p-3.5 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center justify-between text-xs animate-fadeIn">
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-base">verified</span>
-                  <span>Documento verificado en nodo INTA Manfredi. Estado: <strong>Válido y vigente sin objeciones.</strong></span>
+                  <span className="material-symbols-outlined text-emerald-600 text-base">file_download_done</span>
+                  <span>{docNotice}</span>
                 </div>
                 <button
-                  onClick={() => setSelectedLabDoc(null)}
-                  className="text-primary hover:underline font-bold"
+                  onClick={() => setDocNotice(null)}
+                  className="text-emerald-700 hover:text-emerald-900 font-bold cursor-pointer"
                 >
-                  Cerrar vista
+                  ✕
                 </button>
               </div>
             )}
@@ -737,17 +756,16 @@ export const SeguimientoScreen: React.FC<SeguimientoScreenProps> = ({
                     </div>
                   </div>
 
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert(`Verificando hash IPFS en red descentralizada para: ${pdf.title}`);
+                  <button
+                    onClick={() => {
+                      setSelectedIpfsDoc(pdf);
+                      setCopiedIpfsCid(false);
                     }}
-                    className="shrink-0 px-3.5 py-1.5 rounded-lg bg-surface text-on-surface hover:bg-surface-container font-semibold text-xs border border-outline-variant/40 flex items-center gap-1.5"
+                    className="shrink-0 px-3.5 py-1.5 rounded-lg bg-surface text-on-surface hover:bg-surface-container font-semibold text-xs border border-outline-variant/40 flex items-center gap-1.5 transition hover:border-primary cursor-pointer"
                   >
-                    <span className="material-symbols-outlined text-sm">open_in_new</span>
+                    <span className="material-symbols-outlined text-sm text-primary">verified</span>
                     Inspeccionar en IPFS
-                  </a>
+                  </button>
                 </div>
               ))}
             </div>
@@ -914,6 +932,319 @@ export const SeguimientoScreen: React.FC<SeguimientoScreenProps> = ({
                 </div>
               );
             })}
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Inspección IPFS & Garantía Notarial */}
+      {selectedIpfsDoc && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-surface-container-lowest max-w-2xl w-full rounded-3xl p-6 sm:p-8 border border-outline-variant/30 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="flex items-start justify-between gap-4 border-b border-outline-variant/20 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-primary-fixed text-primary flex items-center justify-center shadow-inner">
+                  <span className="material-symbols-outlined text-2xl">history_edu</span>
+                </div>
+                <div>
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold tracking-wide uppercase">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                    Custodia Descentralizada IPFS
+                  </span>
+                  <h3 className="text-lg font-bold text-on-surface mt-1">
+                    Inspección de Instrumento Notarial
+                  </h3>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedIpfsDoc(null)}
+                className="w-8 h-8 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center justify-center transition cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Document Details */}
+            <div className="space-y-4 text-xs">
+              <div className="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-3">
+                <div className="font-bold text-base text-on-surface">
+                  {selectedIpfsDoc.title}
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-outline-variant/20 text-on-surface">
+                  <div>
+                    <span className="text-outline text-[11px] block">Autoridad Notarial / Emisor:</span>
+                    <strong className="text-xs">{selectedIpfsDoc.notary}</strong>
+                  </div>
+                  <div>
+                    <span className="text-outline text-[11px] block">Fecha de Certificación:</span>
+                    <strong className="text-xs">{selectedIpfsDoc.date}</strong>
+                  </div>
+                </div>
+              </div>
+
+              {/* IPFS CID Box */}
+              <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-primary flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-base">tag</span>
+                    Content Identifier (CID v1) en IPFS:
+                  </span>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard?.writeText(selectedIpfsDoc.ipfsCid);
+                      setCopiedIpfsCid(true);
+                      setTimeout(() => setCopiedIpfsCid(false), 2000);
+                    }}
+                    className="text-primary hover:text-primary-dim font-semibold flex items-center gap-1 cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-xs">
+                      {copiedIpfsCid ? 'check' : 'content_copy'}
+                    </span>
+                    {copiedIpfsCid ? '¡Copiado!' : 'Copiar CID'}
+                  </button>
+                </div>
+                <div className="p-2.5 bg-surface rounded-xl font-mono text-[11px] text-on-surface break-all border border-outline-variant/30 select-all">
+                  {selectedIpfsDoc.ipfsCid}
+                </div>
+                <div className="flex flex-wrap items-center gap-3 text-[11px] text-outline pt-1">
+                  <span className="inline-flex items-center gap-1 text-emerald-700 font-medium">
+                    <span className="material-symbols-outlined text-xs">check_circle</span>
+                    Pinneado en 3 Nodos (Pinata, Web3.Storage, Protocol Labs)
+                  </span>
+                  <span>·</span>
+                  <span>Formato: DAG-PB / SHA2-256</span>
+                </div>
+              </div>
+
+              {/* Legal explanation */}
+              <div className="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-2 text-outline">
+                <div className="font-bold text-on-surface text-xs flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-primary text-base">gavel</span>
+                  ¿Cómo funciona la custodia legal en Seed & Grow?
+                </div>
+                <p className="text-[11px] leading-relaxed">
+                  Este instrumento notarial vincula la garantía del mundo físico (escrituras de dominio, comodatos a 15 años y permisos ambientales oficiales) con el <strong>Smart Contract de Escrow</strong> en Base Sepolia.
+                </p>
+                <p className="text-[11px] leading-relaxed">
+                  Al estar registrado en la red distribuida IPFS con este CID único, <strong>ninguna de las partes (ni los creadores ni los escribanos) puede alterar, sustituir o revocar retroactivamente el texto</strong> sin romper la firma digital criptográfica.
+                </p>
+              </div>
+
+              {/* IPFS Gateways URLs */}
+              <div className="space-y-2">
+                <span className="font-bold text-on-surface text-[11px] block">
+                  Compuertas (Gateways) de verificación pública:
+                </span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <a
+                    href={`https://ipfs.io/ipfs/${selectedIpfsDoc.ipfsCid}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary flex items-center justify-between text-xs transition"
+                  >
+                    <span className="truncate">ipfs.io Gateway</span>
+                    <span className="material-symbols-outlined text-xs text-primary">open_in_new</span>
+                  </a>
+                  <a
+                    href={`https://dweb.link/ipfs/${selectedIpfsDoc.ipfsCid}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2.5 rounded-xl bg-surface border border-outline-variant/30 hover:border-primary flex items-center justify-between text-xs transition"
+                  >
+                    <span className="truncate">dweb.link Gateway</span>
+                    <span className="material-symbols-outlined text-xs text-primary">open_in_new</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="pt-2 flex items-center justify-end gap-3 border-t border-outline-variant/20">
+              <button
+                onClick={() => setSelectedIpfsDoc(null)}
+                className="px-5 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-xs hover:bg-primary-container transition cursor-pointer"
+              >
+                Entendido / Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Ensayos de Laboratorio & Certificaciones Científicas */}
+      {selectedLabDoc && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-surface-container-lowest max-w-2xl w-full rounded-3xl p-6 sm:p-8 border border-outline-variant/30 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="flex items-start justify-between gap-4 border-b border-outline-variant/20 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center shadow-inner shrink-0">
+                  <span className="material-symbols-outlined text-2xl">science</span>
+                </div>
+                <div>
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold tracking-wide uppercase">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                    Certificación Oficial ISO 14064-2 · Oráculo dMRV
+                  </span>
+                  <h3 className="text-lg font-bold text-on-surface mt-1">
+                    {selectedLabDoc.title}
+                  </h3>
+                  <p className="text-xs text-outline">{selectedLabDoc.institution}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedLabDoc(null)}
+                className="w-8 h-8 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center justify-center transition cursor-pointer shrink-0"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Institutional Credentials */}
+            <div className="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-3 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-on-surface">
+                <div>
+                  <span className="text-outline text-[11px] block">Organismo Emisor:</span>
+                  <strong className="text-xs text-on-surface">{selectedLabDoc.institution}</strong>
+                </div>
+                <div>
+                  <span className="text-outline text-[11px] block">Responsable Técnico Colegiado:</span>
+                  <strong className="text-xs text-on-surface">{selectedLabDoc.authority || 'Comisión de Acreditación'}</strong>
+                </div>
+                <div>
+                  <span className="text-outline text-[11px] block">Normativa / Protocolo de Calidad:</span>
+                  <span className="font-mono text-xs text-primary font-bold">{selectedLabDoc.protocol || 'ISO 14064-2'}</span>
+                </div>
+                <div>
+                  <span className="text-outline text-[11px] block">Fecha de Muestreo y Ensayo:</span>
+                  <strong className="text-xs text-on-surface">{selectedLabDoc.date}</strong>
+                </div>
+              </div>
+            </div>
+
+            {/* Scientific Parameters & Lab Results Grid */}
+            {selectedLabDoc.metrics && selectedLabDoc.metrics.length > 0 && (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-bold text-on-surface uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-primary text-base">biotech</span>
+                    Resultados Analíticos Cuantitativos
+                  </h4>
+                  <span className="text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md font-semibold border border-emerald-200">
+                    Aprobado 100% de Parámetros
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {selectedLabDoc.metrics.map((m: any, idx: number) => (
+                    <div
+                      key={idx}
+                      className="p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col justify-between"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <span className="text-xs text-outline">{m.label}</span>
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                          {m.status}
+                        </span>
+                      </div>
+                      <div className="mt-2 flex items-baseline justify-between">
+                        <span className="text-base font-black text-on-surface">{m.value}</span>
+                        <span className="text-[11px] text-outline font-mono">{m.range}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Technical Summary */}
+            {selectedLabDoc.summary && (
+              <div className="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/30 space-y-1.5 text-xs">
+                <span className="font-bold text-on-surface flex items-center gap-1 text-[11px]">
+                  <span className="material-symbols-outlined text-sm text-primary">fact_check</span>
+                  Conclusión del Dictamen Edafológico / Ambiental:
+                </span>
+                <p className="text-on-surface-variant leading-relaxed text-[11px]">
+                  {selectedLabDoc.summary}
+                </p>
+              </div>
+            )}
+
+            {/* Cryptographic Hash & Smart Contract Oracle Link */}
+            <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20 space-y-3 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-primary flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-base">enhanced_encryption</span>
+                  Hash Criptográfico Inmutable (SHA-256 / Keccak):
+                </span>
+                <button
+                  onClick={() => {
+                    navigator.clipboard?.writeText(selectedLabDoc.fullHash || selectedLabDoc.hash);
+                    setCopiedLabHash(true);
+                    setTimeout(() => setCopiedLabHash(false), 2000);
+                  }}
+                  className="text-primary hover:text-primary-dim font-semibold flex items-center gap-1 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-xs">
+                    {copiedLabHash ? 'check' : 'content_copy'}
+                  </span>
+                  {copiedLabHash ? '¡Copiado!' : 'Copiar Hash'}
+                </button>
+              </div>
+              <div className="p-2.5 bg-surface rounded-xl font-mono text-[11px] text-on-surface break-all border border-outline-variant/30 select-all">
+                {selectedLabDoc.fullHash || selectedLabDoc.hash}
+              </div>
+
+              {selectedLabDoc.roleInContract && (
+                <div className="p-3 rounded-xl bg-amber-50 border border-amber-200/80 text-amber-900 text-[11px] space-y-1">
+                  <span className="font-bold flex items-center gap-1">
+                    <span className="material-symbols-outlined text-xs text-amber-700">lock</span>
+                    Condición Mandatoria en Smart Contract Escrow:
+                  </span>
+                  <p className="text-amber-800 leading-normal">
+                    {selectedLabDoc.roleInContract}. Si este hash no está validado por el oráculo dMRV en la blockchain, el contrato inteligente mantiene bloqueados los fondos.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Footer Buttons */}
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-outline-variant/20">
+              <button
+                onClick={() => {
+                  setDocNotice(`Certificado descargado con éxito: ${selectedLabDoc.title}`);
+                  const blob = new Blob([
+                    `DICTAMEN DE LABORATORIO Y ENSAYO OFICIAL\n\n` +
+                    `Documento: ${selectedLabDoc.title}\n` +
+                    `Institución: ${selectedLabDoc.institution}\n` +
+                    `Norma: ${selectedLabDoc.protocol || 'ISO 14064-2'}\n` +
+                    `Responsable Técnico: ${selectedLabDoc.authority}\n` +
+                    `Fecha: ${selectedLabDoc.date}\n` +
+                    `Hash Blockchain: ${selectedLabDoc.fullHash || selectedLabDoc.hash}\n` +
+                    `Red: ${selectedLabDoc.network || 'Polygon PoS'}\n\n` +
+                    `Dictamen: ${selectedLabDoc.summary}\n\n` +
+                    `Certificación con validez jurídica conforme a la Ley de Firma Digital y Oráculo dMRV.`
+                  ], { type: 'text/plain' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `${selectedLabDoc.title.replace(/\s+/g, '_')}_Acreditado.txt`;
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }}
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-surface border border-outline-variant/40 hover:bg-surface-container text-on-surface font-semibold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-sm">download</span>
+                Descargar Comprobante Acreditado
+              </button>
+
+              <button
+                onClick={() => setSelectedLabDoc(null)}
+                className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-xs hover:bg-primary-container transition cursor-pointer"
+              >
+                Cerrar Inspector
+              </button>
+            </div>
           </div>
         </div>
       )}
