@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import { ScreenView, Project } from '../types';
 import { BIOFABRICA_PROJECT_DETAILS, BIOFABRICA_MILESTONES } from '../data/mockData';
+import { ProjectDataVisualization } from './ProjectDataVisualization';
 
 interface SeguimientoScreenProps {
   onNavigate: (screen: ScreenView) => void;
   onOpenInvestModal: (project: Project) => void;
   onOpenEvidenceModal?: (title: string, items: any[]) => void;
+  onOpenContractModal?: () => void;
 }
 
 export const SeguimientoScreen: React.FC<SeguimientoScreenProps> = ({
   onNavigate,
   onOpenInvestModal,
   onOpenEvidenceModal,
+  onOpenContractModal,
 }) => {
-  const [activeTab, setActiveTab] = useState<'ecologia' | 'finanzas' | 'legal' | 'hitos'>('ecologia');
+  const [activeTab, setActiveTab] = useState<'ecologia' | 'finanzas' | 'graficos' | 'legal' | 'hitos'>('graficos');
   const [selectedLabDoc, setSelectedLabDoc] = useState<string | null>(null);
 
   const project = BIOFABRICA_PROJECT_DETAILS;
@@ -35,10 +38,14 @@ export const SeguimientoScreen: React.FC<SeguimientoScreenProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-fixed text-primary text-[11px] font-bold">
+          <button
+            onClick={onOpenContractModal}
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-fixed text-primary text-[11px] font-bold hover:bg-primary-fixed-dim transition cursor-pointer"
+            title="Inspeccionar Smart Contract y Certificados NFT"
+          >
             <span className="material-symbols-outlined text-xs">verified</span>
-            Auditoría en Base Sepolia
-          </span>
+            Auditoría en Base Sepolia (0x8f3c...b49e)
+          </button>
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[11px] font-bold">
             <span className="material-symbols-outlined text-xs">lock</span>
             Multi-Sig 3/5 Activo
@@ -58,9 +65,14 @@ export const SeguimientoScreen: React.FC<SeguimientoScreenProps> = ({
                 <span className="material-symbols-outlined text-sm text-primary">location_on</span>
                 {project.location}
               </span>
-              <span className="text-xs text-outline font-mono">
+              <button
+                onClick={onOpenContractModal}
+                className="text-xs text-primary font-mono font-bold hover:underline flex items-center gap-1"
+                title="Inspeccionar contrato en BaseScan"
+              >
+                <span className="material-symbols-outlined text-xs">code</span>
                 Contrato: {project.smartContractAddress}
-              </span>
+              </button>
             </div>
 
             <h1 className="text-2xl sm:text-4xl font-extrabold text-on-surface tracking-tight">
@@ -151,11 +163,19 @@ export const SeguimientoScreen: React.FC<SeguimientoScreenProps> = ({
               </button>
 
               <button
+                onClick={() => setActiveTab('graficos')}
+                className="w-full py-2.5 rounded-xl bg-primary-fixed/40 text-primary font-bold text-xs hover:bg-primary-fixed transition flex items-center justify-center gap-2 border border-primary/20"
+              >
+                <span className="material-symbols-outlined text-base">insights</span>
+                Ver Gráficos de Recaudación &amp; Escrow
+              </button>
+
+              <button
                 onClick={() => onNavigate('hitos-escrow')}
                 className="w-full py-2.5 rounded-xl bg-surface-container-high text-on-surface font-semibold text-xs hover:bg-surface-container transition flex items-center justify-center gap-2"
               >
                 <span className="material-symbols-outlined text-base text-primary">how_to_vote</span>
-                Ver Hitos & Votar Desembolso
+                Ver Hitos &amp; Votar Desembolso
               </button>
             </div>
           </div>
@@ -165,15 +185,15 @@ export const SeguimientoScreen: React.FC<SeguimientoScreenProps> = ({
       {/* Main Tabs Navigation */}
       <div className="border-b border-outline-variant/30 flex items-center gap-2 overflow-x-auto scrollbar-none">
         <button
-          onClick={() => setActiveTab('ecologia')}
+          onClick={() => setActiveTab('graficos')}
           className={`flex items-center gap-2 py-3 px-5 text-sm font-bold border-b-2 transition whitespace-nowrap ${
-            activeTab === 'ecologia'
+            activeTab === 'graficos'
               ? 'border-primary text-primary bg-primary-fixed/10 rounded-t-xl'
               : 'border-transparent text-outline hover:text-on-surface'
           }`}
         >
-          <span className="material-symbols-outlined text-lg">eco</span>
-          Impacto Ecológico & Microbiota
+          <span className="material-symbols-outlined text-lg">insights</span>
+          Flujo &amp; Gráficos Escrow (Recharts)
         </button>
 
         <button
@@ -185,7 +205,19 @@ export const SeguimientoScreen: React.FC<SeguimientoScreenProps> = ({
           }`}
         >
           <span className="material-symbols-outlined text-lg">account_balance</span>
-          Finanzas, Escrow & Multi-Sig
+          Finanzas, Escrow &amp; Multi-Sig
+        </button>
+
+        <button
+          onClick={() => setActiveTab('ecologia')}
+          className={`flex items-center gap-2 py-3 px-5 text-sm font-bold border-b-2 transition whitespace-nowrap ${
+            activeTab === 'ecologia'
+              ? 'border-primary text-primary bg-primary-fixed/10 rounded-t-xl'
+              : 'border-transparent text-outline hover:text-on-surface'
+          }`}
+        >
+          <span className="material-symbols-outlined text-lg">science</span>
+          Impacto &amp; Validación Técnica
         </button>
 
         <button
@@ -197,7 +229,7 @@ export const SeguimientoScreen: React.FC<SeguimientoScreenProps> = ({
           }`}
         >
           <span className="material-symbols-outlined text-lg">gavel</span>
-          Legal & Título de Tierra
+          Legal, Constitución &amp; Título
         </button>
 
         <button
@@ -209,11 +241,23 @@ export const SeguimientoScreen: React.FC<SeguimientoScreenProps> = ({
           }`}
         >
           <span className="material-symbols-outlined text-lg">timeline</span>
-          Hitos & Liberación de Fondos
+          Hitos &amp; Liberación de Fondos
         </button>
       </div>
 
-      {/* Tab 1: Impacto Ecológico */}
+      {/* Tab: Flujo & Gráficos Escrow (Recharts) */}
+      {activeTab === 'graficos' && (
+        <div className="space-y-8 animate-fadeIn">
+          <ProjectDataVisualization
+            goalAmount={project.goalAmount}
+            fundedAmount={project.fundedAmount}
+            currency="USDC"
+            smartContractAddress={project.smartContractAddress}
+          />
+        </div>
+      )}
+
+      {/* Tab 1: Impacto Ecológico & Validación Técnica */}
       {activeTab === 'ecologia' && (
         <div className="space-y-8 animate-fadeIn">
           {/* Soil & Impact Metrics Grid */}
@@ -393,6 +437,14 @@ export const SeguimientoScreen: React.FC<SeguimientoScreenProps> = ({
       {/* Tab 2: Finanzas, Escrow & Multi-Sig */}
       {activeTab === 'finanzas' && (
         <div className="space-y-8 animate-fadeIn">
+          {/* Data Visualization with Recharts */}
+          <ProjectDataVisualization
+            goalAmount={project.goalAmount}
+            fundedAmount={project.fundedAmount}
+            currency="USDC"
+            smartContractAddress={project.smartContractAddress}
+          />
+
           {/* Financial Summary KPIs */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/30 space-y-1">

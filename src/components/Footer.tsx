@@ -36,11 +36,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <span className="font-bold text-xl text-[#012d1d] tracking-tight">Seed &amp; Grow</span>
             </div>
             <p className="text-[15px] leading-relaxed text-[#414844] max-w-sm">
-              Plataforma de financiamiento colectivo regenerativo. Conectamos capital paciente con productores ecológicos, proyectos agroforestales y desarrollo territorial sostenible.
+              Plataforma de capital semilla (Seed) y financiamiento colectivo. Conectamos aportantes con proyectos y fundadores innovadores con custodia escrow inteligente, auditoría técnica y rendición transparente por hitos (Grow).
             </p>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f2ede8] text-[#414844] font-bold text-[11px] tracking-wide">
               <span className="material-symbols-outlined text-[#006c48] text-[16px]">verified</span>
-              <span>Sello de Custodia Ética &amp; Trazabilidad Abierta</span>
+              <span>Custodia Escrow Inteligente &amp; Rendición On-Chain</span>
             </div>
           </div>
 
@@ -66,6 +66,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <li>
                 <button onClick={() => onNavigate('hitos-escrow')} className="hover:text-[#012d1d] transition-colors cursor-pointer text-left">
                   Gestión Escrow (Productor)
+                </button>
+              </li>
+              <li>
+                <button onClick={() => onNavigate('gobernanza')} className="hover:text-[#012d1d] transition-colors cursor-pointer text-left">
+                  Gobernanza de Proyectos
                 </button>
               </li>
               <li>

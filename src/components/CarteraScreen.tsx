@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { ScreenView, Investment } from '../types';
+import { ScreenView, Investment, UserAccount } from '../types';
 import { INITIAL_INVESTMENTS } from '../data/mockData';
 
 interface CarteraScreenProps {
   onNavigate: (screen: ScreenView) => void;
+  onOpenNftModal?: (investment: Investment) => void;
+  currentUser?: UserAccount | null;
 }
 
-export const CarteraScreen: React.FC<CarteraScreenProps> = ({ onNavigate }) => {
+export const CarteraScreen: React.FC<CarteraScreenProps> = ({ onNavigate, onOpenNftModal, currentUser }) => {
   const [filterType, setFilterType] = useState<string>('todos');
   const [claimToast, setClaimToast] = useState<string | null>(null);
 
@@ -36,11 +38,18 @@ export const CarteraScreen: React.FC<CarteraScreenProps> = ({ onNavigate }) => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
             <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-primary-fixed text-primary">
-              Portafolio de Impacto
+              Portafolio de Impacto &amp; Retornos
             </span>
-            <span className="text-xs text-outline font-medium">Billetera Conectada</span>
+            {currentUser ? (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#ecfdf5] text-[#065f46] border border-[#a7f3d0]">
+                <span className="w-2 h-2 rounded-full bg-[#10b981]"></span>
+                <span className="font-mono">{currentUser.addressOrEmail}</span>
+              </span>
+            ) : (
+              <span className="text-xs text-outline font-medium">Billetera Conectada (Invitado)</span>
+            )}
           </div>
           <h1 className="text-2xl sm:text-4xl font-extrabold text-on-surface tracking-tight">
             Mi Cartera de Inversiones Regenerativas
@@ -204,11 +213,11 @@ export const CarteraScreen: React.FC<CarteraScreenProps> = ({ onNavigate }) => {
 
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => alert(`Descargando certificado de aportante de ${inv.title} con firma criptográfica`)}
+                  onClick={() => onOpenNftModal ? onOpenNftModal(inv) : alert(`Abriendo certificado NFT de ${inv.title}`)}
                   className="px-3.5 py-1.5 rounded-lg bg-surface hover:bg-surface-container text-on-surface text-xs font-semibold border border-outline-variant/30 flex items-center gap-1.5 transition"
                 >
-                  <span className="material-symbols-outlined text-sm">badge</span>
-                  Certificado NFT/PDF
+                  <span className="material-symbols-outlined text-sm text-primary">badge</span>
+                  Certificado NFT / Smart Contract
                 </button>
 
                 <button

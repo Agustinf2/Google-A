@@ -5,14 +5,24 @@ export type ScreenView =
   | 'publicar' 
   | 'hitos-escrow' 
   | 'auditor' 
+  | 'gobernanza'
   | 'login';
 
 export type UserRole = 'investor' | 'creator' | 'auditor';
 
+export interface UserAccount {
+  type: 'wallet' | 'google' | 'email';
+  addressOrEmail: string;
+  name?: string;
+  avatar?: string;
+  balanceUSDC?: number;
+  network?: string;
+}
+
 export interface Project {
   id: string;
   title: string;
-  category: 'diseno' | 'tecnologia' | 'sustentabilidad' | 'agro' | 'energia';
+  category: 'diseno' | 'tecnologia' | 'sustentabilidad' | 'agro' | 'energia' | 'salud' | string;
   categoryLabel: string;
   location: string;
   daysLeft: number;

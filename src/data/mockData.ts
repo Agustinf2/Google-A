@@ -75,6 +75,42 @@ export const INITIAL_PROJECTS: Project[] = [
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAe4a0hxAK5PTq9r_QIFlcp00soJMkxvoyP-XpsjSSI_SRwo_fpnQtCdCyUJmxnAsIvDcdINA0sZBaWKivtoVQN1f7BbfeY9OLSh2HE2TgD8YFOl9ErD7d_iDOYOrT1pAW18k5R0G3Vtp9yiC3eL4ljZa0L0SU9M7iVqCeMx7Vt077O5tAQj7mT6gKXRnyrgjv9hz2wiCLD5cjCDxCXAN125IeET0yKXxBaZJe62tjV6Ptd1GmdxWEG',
     isBookmarked: false,
   },
+  {
+    id: 'voltgrid-energy',
+    title: 'VoltGrid Energía Distribuida',
+    category: 'energia',
+    categoryLabel: 'Energía Limpia',
+    location: 'Mendoza, Cuyo',
+    daysLeft: 31,
+    description: 'Microrredes fotovoltaicas comunitarias con medidores inteligentes IoT para electrificación productiva industrial.',
+    fundedAmount: 38500,
+    goalAmount: 50000,
+    percentage: 77,
+    modality: 'participacion',
+    modalityDetail: 'Participación en Dividendos',
+    creatorName: 'Lucas Benítez',
+    creatorInitials: 'VG',
+    image: 'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=600&q=80',
+    isBookmarked: false,
+  },
+  {
+    id: 'neurosync-health',
+    title: 'NeuroSync Tech',
+    category: 'salud',
+    categoryLabel: 'Salud & Biotec',
+    location: 'Montevideo / Buenos Aires',
+    daysLeft: 15,
+    description: 'Dispositivo wearable no invasivo de neuromodulación y estimulación cognitiva para rehabilitación motriz.',
+    fundedAmount: 64000,
+    goalAmount: 70000,
+    percentage: 91,
+    modality: 'participacion',
+    modalityDetail: 'Equity Ronda Seed',
+    creatorName: 'Dra. Sofía Roldán',
+    creatorInitials: 'NS',
+    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80',
+    isBookmarked: true,
+  },
 ];
 
 export const INITIAL_INVESTMENTS: Investment[] = [
@@ -432,4 +468,240 @@ export const AUDITOR_REPORT = {
     },
   ],
   concludingRemarks: 'Se constata la plena ejecución de los trabajos contemplados en el Hito 2. La infraestructura se encuentra lista para recibir el digestor termófilo de 5.000L. Este auditor emite dictamen FAVORABLE y autoriza la liberación del segundo tramo de fondos ($5,000 USDC) custodiados en el smart contract multi-firma.',
+};
+
+export interface GovernanceProjectItem {
+  id: string;
+  title: string;
+  category: string;
+  categoryLabel: string;
+  creator: string;
+  healthScore: number; // 0 - 100
+  healthStatus: 'Excelente' | 'Muy Bueno' | 'Bueno' | 'En Observación';
+  healthColor: string;
+  participationRate: number; // %
+  favorableVotesPercent: number; // %
+  totalVotesCount: number;
+  activeVoting: {
+    hasActiveVoting: boolean;
+    milestoneTitle?: string;
+    hoursLeft?: number;
+    amountToRelease?: number;
+    quorumReached: boolean;
+  };
+  auditorApproval: {
+    status: 'Certificado' | 'En Revisión' | 'Con Observaciones';
+    auditorName: string;
+    score: number;
+  };
+  funds: {
+    totalBudget: number;
+    disbursed: number;
+    inEscrow: number;
+  };
+  roadmapAdherence: number; // %
+  image: string;
+}
+
+export const GOVERNANCE_DATA = {
+  globalMetrics: {
+    totalVotesCast: 1482,
+    averageQuorum: 76.4,
+    communityApprovalRate: 94.8,
+    activeVotingCount: 2,
+    totalEscrowManagedUsdc: 1480000,
+    healthyProjectsCount: 5,
+    underObservationCount: 1,
+  },
+  projects: [
+    {
+      id: 'neurosync-health',
+      title: 'NeuroSync Tech',
+      category: 'salud',
+      categoryLabel: 'Salud & Biotec',
+      creator: 'Dra. Sofía Roldán',
+      healthScore: 97,
+      healthStatus: 'Excelente',
+      healthColor: 'text-primary bg-primary-fixed',
+      participationRate: 88,
+      favorableVotesPercent: 98,
+      totalVotesCount: 218,
+      activeVoting: {
+        hasActiveVoting: false,
+        milestoneTitle: 'Hito 1: Prototipo funcional & Certificación ISO 13485 (Completado)',
+        amountToRelease: 20000,
+        quorumReached: true,
+      },
+      auditorApproval: {
+        status: 'Certificado',
+        auditorName: 'Dra. Elena Rossi (Perito Biomédica)',
+        score: 98,
+      },
+      funds: {
+        totalBudget: 70000,
+        disbursed: 20000,
+        inEscrow: 50000,
+      },
+      roadmapAdherence: 100,
+      image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=400&q=80',
+    },
+    {
+      id: 'biofabrica-serrana',
+      title: 'Biofábrica Serrana de Insumos Vivos',
+      category: 'agro',
+      categoryLabel: 'Agro & Bioeconomía',
+      creator: 'Valentín Echegaray',
+      healthScore: 96,
+      healthStatus: 'Excelente',
+      healthColor: 'text-primary bg-primary-fixed',
+      participationRate: 74,
+      favorableVotesPercent: 96,
+      totalVotesCount: 142,
+      activeVoting: {
+        hasActiveVoting: true,
+        milestoneTitle: 'Hito 2: Montaje de galpón bioclimático y cisterna 30.000L',
+        hoursLeft: 41,
+        amountToRelease: 5000,
+        quorumReached: true,
+      },
+      auditorApproval: {
+        status: 'Certificado',
+        auditorName: 'Ing. Agr. Valentín Morales (CIAPC 4819)',
+        score: 98,
+      },
+      funds: {
+        totalBudget: 25000,
+        disbursed: 5000,
+        inEscrow: 20000,
+      },
+      roadmapAdherence: 98,
+      image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=400&q=80',
+    },
+    {
+      id: 'voltgrid-energy',
+      title: 'VoltGrid Energía Distribuida',
+      category: 'energia',
+      categoryLabel: 'Energía & Clima',
+      creator: 'Lucas Benítez',
+      healthScore: 92,
+      healthStatus: 'Muy Bueno',
+      healthColor: 'text-secondary bg-secondary-container',
+      participationRate: 82,
+      favorableVotesPercent: 94,
+      totalVotesCount: 184,
+      activeVoting: {
+        hasActiveVoting: true,
+        milestoneTitle: 'Hito 2: Instalación de medidores telemétricos IoT en 3 cooperativas',
+        hoursLeft: 18,
+        amountToRelease: 15000,
+        quorumReached: true,
+      },
+      auditorApproval: {
+        status: 'Certificado',
+        auditorName: 'Ing. Eléctrico Mario Solari',
+        score: 92,
+      },
+      funds: {
+        totalBudget: 50000,
+        disbursed: 15000,
+        inEscrow: 35000,
+      },
+      roadmapAdherence: 95,
+      image: 'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=400&q=80',
+    },
+    {
+      id: 'nexo-salud',
+      title: 'Nexo Salud',
+      category: 'tecnologia',
+      categoryLabel: 'Tecnología & Software',
+      creator: 'Dra. Alvarez',
+      healthScore: 89,
+      healthStatus: 'Bueno',
+      healthColor: 'text-tertiary bg-tertiary-container',
+      participationRate: 79,
+      favorableVotesPercent: 92,
+      totalVotesCount: 165,
+      activeVoting: {
+        hasActiveVoting: false,
+        milestoneTitle: 'Hito 2: Pruebas de baja latencia satelital en 8 postas',
+        amountToRelease: 12000,
+        quorumReached: true,
+      },
+      auditorApproval: {
+        status: 'Certificado',
+        auditorName: 'Lic. M. Peralta (Auditor Sistemas)',
+        score: 90,
+      },
+      funds: {
+        totalBudget: 45000,
+        disbursed: 20000,
+        inEscrow: 25000,
+      },
+      roadmapAdherence: 92,
+      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDPItrDQ1tS28uz50pjMNOsy6A_fpGCgoQ8vPFW5JUdtEF0SEiutsr21nhPSYO14JvfZmkhi_h2wN7Qatjew6K2mjGKT89B3K1qLx_nR9ELJrRbkajBumNVS3WIJiLynqauph8u_3FX9iwaAoBVbkhzvJD9ERUH9mQby7KcUorIvcXeqAvh0OQc3L9Dr7_8PlP9TF-qjE0G0YlUe4dHOBQsjHSxa5l7nFw-Bh7MtvRCfODjrWNpcZMq',
+    },
+    {
+      id: 'oficio-studio',
+      title: 'Oficio Studio',
+      category: 'diseno',
+      categoryLabel: 'Diseño & Hardware',
+      creator: 'Martín Díaz',
+      healthScore: 86,
+      healthStatus: 'Bueno',
+      healthColor: 'text-tertiary bg-tertiary-container',
+      participationRate: 68,
+      favorableVotesPercent: 89,
+      totalVotesCount: 96,
+      activeVoting: {
+        hasActiveVoting: false,
+        milestoneTitle: 'Hito 1: Acopio de maderas de demolición certificadas',
+        amountToRelease: 8000,
+        quorumReached: true,
+      },
+      auditorApproval: {
+        status: 'Certificado',
+        auditorName: 'Arq. D. Navarro (Ecodiseño)',
+        score: 88,
+      },
+      funds: {
+        totalBudget: 18000,
+        disbursed: 8000,
+        inEscrow: 10000,
+      },
+      roadmapAdherence: 90,
+      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDPIKYiV13ViRdRc7Ne1PI-cTl5gwAt4ZpLqWYaMiO_hWtoD9gjX1TBihgUgUc5WJIt3DihceD5nHAFA8bo5iprddkTtXLGMD-kHU73XjuMCKvzOpFK5mGZ06ErYsgc1buJ3WRrQ82_z5OlwoXGJQrJb3EV1YR9BjgQcAkoHQIVpNXxlvLxYtXqjSU4o9YUvuOdLT7YcypYRGRyB5walvX7kmiBDnde-JbeMhvc5InYqoSosg7Fa1gZ',
+    },
+    {
+      id: 'raiz-circular',
+      title: 'Raíz Circular',
+      category: 'sustentabilidad',
+      categoryLabel: 'Sustentabilidad',
+      creator: 'Coop. Serrana',
+      healthScore: 74,
+      healthStatus: 'En Observación',
+      healthColor: 'text-error bg-error/15',
+      participationRate: 58, // debajo del 60% requerido
+      favorableVotesPercent: 83,
+      totalVotesCount: 112,
+      activeVoting: {
+        hasActiveVoting: true,
+        milestoneTitle: 'Hito 2: Planta de pelletizado de biomasa',
+        hoursLeft: 12,
+        amountToRelease: 9000,
+        quorumReached: false, // Quórum aún no alcanzado (58% / 60%)
+      },
+      auditorApproval: {
+        status: 'Con Observaciones',
+        auditorName: 'Ing. Forestal P. Quiroga',
+        score: 75,
+      },
+      funds: {
+        totalBudget: 30000,
+        disbursed: 12000,
+        inEscrow: 18000,
+      },
+      roadmapAdherence: 78,
+      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDHKzacPBTEYG04Xrl-fMwRI5vjbUhTxtttrOdOOUIID0fXGtlgjHr6QRsI5u5sLaXTf1SsI_sP6FTjgcBXwBKG1TzmVzpq76eWkTOYLy3MGiEmDnmkruAjInCf8CQSGXvnur2_GnIvpp0HJGIJ219dunDiB7JbwfMVPRWgyz_IZNwVYCBMbLXKe7LJEf-LeKVRV45vYRzKxtFk7BfUlLKSSBKcBiolH2PwIpUJg9wgk-PlXSSLMYnu',
+    },
+  ] as GovernanceProjectItem[],
 };

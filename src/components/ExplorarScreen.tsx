@@ -30,10 +30,12 @@ export const ExplorarScreen: React.FC<ExplorarScreenProps> = ({
 
   const categories = [
     { id: 'todos', label: 'Todos los proyectos', icon: 'apps' },
-    { id: 'agro', label: 'Agroecología & Suelo', icon: 'agriculture' },
-    { id: 'sustentabilidad', label: 'Reforestación Serrana', icon: 'forest' },
-    { id: 'tecnologia', label: 'Tecnología Rural', icon: 'sensors' },
-    { id: 'diseno', label: 'Biofabricación', icon: 'recycling' },
+    { id: 'tecnologia', label: 'Tecnología & Software', icon: 'terminal' },
+    { id: 'salud', label: 'Salud & Biotec', icon: 'biotech' },
+    { id: 'diseno', label: 'Diseño & Hardware', icon: 'devices' },
+    { id: 'energia', label: 'Energía & Clima', icon: 'solar_power' },
+    { id: 'agro', label: 'Agro & Bioeconomía', icon: 'agriculture' },
+    { id: 'sustentabilidad', label: 'Sustentabilidad', icon: 'forest' },
   ];
 
   const filteredProjects = INITIAL_PROJECTS.filter((proj) => {
@@ -57,32 +59,32 @@ export const ExplorarScreen: React.FC<ExplorarScreenProps> = ({
 
         <div className="relative z-10 max-w-4xl space-y-6">
           <div className="inline-flex items-center gap-2 rounded-full bg-primary-fixed/20 px-4 py-1.5 backdrop-blur-md border border-primary-fixed/30 text-primary-fixed text-xs font-semibold uppercase tracking-wider">
-            <span className="material-symbols-outlined text-sm">verified_user</span>
-            Financiamiento Regenerativo con Escrow Inteligente
+            <span className="material-symbols-outlined text-sm">rocket_launch</span>
+            Capital Semilla (Seed) & Crecimiento (Grow) con Escrow
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight text-surface">
-            Financia la regeneración de la tierra con custodia escrow transparente.
+            Financia proyectos reales con capital semilla y custodia inteligente.
           </h1>
 
           <p className="text-base sm:text-lg text-primary-fixed/90 max-w-2xl font-normal leading-relaxed">
-            Plataforma comunitaria donde cada desembolso de fondos está respaldado por auditoría técnica en terreno,
-            muestreo microbiológico y votación transparente de la comunidad de aportantes.
+            Impulsa emprendimientos innovadores desde su etapa semilla (Seed) hasta su escalamiento (Grow).
+            Cada desembolso está protegido en contratos inteligentes y se libera por tramos según hitos verificados y auditoría comunitaria.
           </p>
 
           {/* Quick Metrics Bar */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-white/10">
             <div className="bg-black/20 backdrop-blur-md rounded-2xl p-4 border border-white/10">
               <div className="text-2xl sm:text-3xl font-extrabold text-primary-fixed">$1.48M</div>
-              <div className="text-xs text-white/70 font-medium">Bajo Custodia Escrow</div>
+              <div className="text-xs text-white/70 font-medium">Capital Semilla en Custodia</div>
             </div>
             <div className="bg-black/20 backdrop-blur-md rounded-2xl p-4 border border-white/10">
               <div className="text-2xl sm:text-3xl font-extrabold text-primary-fixed">94%</div>
-              <div className="text-xs text-white/70 font-medium">Hitos Validados con Éxito</div>
+              <div className="text-xs text-white/70 font-medium">Hitos de Entrega Validados</div>
             </div>
             <div className="bg-black/20 backdrop-blur-md rounded-2xl p-4 border border-white/10">
-              <div className="text-2xl sm:text-3xl font-extrabold text-primary-fixed">4.200+</div>
-              <div className="text-xs text-white/70 font-medium">Hectáreas Regeneradas</div>
+              <div className="text-2xl sm:text-3xl font-extrabold text-primary-fixed">120+</div>
+              <div className="text-xs text-white/70 font-medium">Proyectos en Escalamiento</div>
             </div>
             <div className="bg-black/20 backdrop-blur-md rounded-2xl p-4 border border-white/10">
               <div className="text-2xl sm:text-3xl font-extrabold text-primary-fixed">Base</div>
@@ -409,10 +411,10 @@ export const ExplorarScreen: React.FC<ExplorarScreenProps> = ({
             Arquitectura de Confianza On-Chain
           </span>
           <h2 className="text-2xl font-bold text-on-surface">
-            ¿Cómo garantiza Seed & Grow que tu aporte llegue a la tierra?
+            ¿Cómo garantiza Seed & Grow que tu capital semilla cumpla su meta?
           </h2>
           <p className="text-xs sm:text-sm text-outline">
-            Superamos la opacidad del crowdfunding tradicional uniendo smart contracts con inspecciones agronómicas reales.
+            Superamos la incertidumbre del crowdfunding tradicional protegiendo cada aporte con smart contracts y verificación técnica por etapas.
           </p>
         </div>
 
@@ -421,29 +423,29 @@ export const ExplorarScreen: React.FC<ExplorarScreenProps> = ({
             <div className="w-10 h-10 rounded-xl bg-primary-fixed text-primary flex items-center justify-center">
               <span className="material-symbols-outlined text-2xl">lock_clock</span>
             </div>
-            <h3 className="text-base font-bold text-on-surface">1. Custodia Escrow Multi-Firma</h3>
+            <h3 className="text-base font-bold text-on-surface">1. Capital Semilla (Seed) en Escrow</h3>
             <p className="text-xs text-on-surface-variant leading-relaxed">
-              El 100% de los fondos se resguarda en bóvedas inteligentes en la red Base. Ningún tramo se gira al promotor por adelantado; se liberan exclusivamente por hitos completados.
+              El 100% de los fondos se resguarda en contratos inteligentes multi-firma en la red Base. Ningún tramo se gira a los fundadores por adelantado; se desbloquean exclusivamente por hitos completados.
             </p>
           </div>
 
           <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/20 space-y-3">
             <div className="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-container flex items-center justify-center">
-              <span className="material-symbols-outlined text-2xl">science</span>
+              <span className="material-symbols-outlined text-2xl">verified</span>
             </div>
-            <h3 className="text-base font-bold text-on-surface">2. Dictamen Agronómico Colegiado</h3>
+            <h3 className="text-base font-bold text-on-surface">2. Validación Técnica Independiente</h3>
             <p className="text-xs text-on-surface-variant leading-relaxed">
-              Ingenieros agrónomos matriculados y laboratorios acreditados (INTA / Universidades) realizan inspecciones en terreno con coordenadas GPS verificadas y análisis microbiológicos.
+              Peritos técnicos, auditores contables, ingenieros o especialistas acreditados según la industria inspeccionan entregables tangibles, prototipos, código o infraestructura antes de cada firma.
             </p>
           </div>
 
           <div className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/20 space-y-3">
             <div className="w-10 h-10 rounded-xl bg-tertiary-container text-on-tertiary-container flex items-center justify-center">
-              <span className="material-symbols-outlined text-2xl">how_to_vote</span>
+              <span className="material-symbols-outlined text-2xl">trending_up</span>
             </div>
-            <h3 className="text-base font-bold text-on-surface">3. Votación Comunitaria de Aportantes</h3>
+            <h3 className="text-base font-bold text-on-surface">3. Crecimiento (Grow) & Rendición</h3>
             <p className="text-xs text-on-surface-variant leading-relaxed">
-              Cada aportante tiene poder de voto ponderado para auditar la evidencia fotográfica, facturas fiscales electrónicas y autorizar la liberación del desembolso en 48 horas.
+              La comunidad de aportantes participa con voz y voto en la aprobación de cada desembolso, fiscalizando facturas, métricas de tracción y evolución del negocio en tiempo real.
             </p>
           </div>
         </div>

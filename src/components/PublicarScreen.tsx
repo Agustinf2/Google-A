@@ -103,19 +103,19 @@ export const PublicarScreen: React.FC<PublicarScreenProps> = ({
       {currentStep === 1 && (
         <div className="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 border border-outline-variant/30 space-y-6">
           <h2 className="text-lg font-bold text-on-surface flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary">eco</span>
-            Paso 1: Información del Predio y Propuesta Regenerativa
+            <span className="material-symbols-outlined text-primary">rocket_launch</span>
+            Paso 1: Información General del Proyecto y Propuesta de Valor
           </h2>
 
           <div className="space-y-4 text-xs">
             <div>
-              <label className="block font-semibold text-on-surface mb-1">Título del Proyecto</label>
+              <label className="block font-semibold text-on-surface mb-1">Título del Proyecto / Emprendimiento</label>
               <input
                 type="text"
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                placeholder="Ej. Biofábrica Comunitaria de Biopreparados"
+                placeholder="Ej. Nexo Cloud, Biofábrica Comunitaria, VoltGrid Solar..."
                 className="w-full p-3 rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface focus:outline-none focus:border-primary text-sm"
               />
             </div>
@@ -129,10 +129,12 @@ export const PublicarScreen: React.FC<PublicarScreenProps> = ({
                   onChange={handleChange}
                   className="w-full p-3 rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface focus:outline-none focus:border-primary text-sm"
                 >
-                  <option value="agro">Agroecología & Biomasa</option>
-                  <option value="sustentabilidad">Reforestación de Bosque Nativo</option>
-                  <option value="tecnologia">Monitoreo IoT & Teledetección</option>
-                  <option value="diseno">Biofabricación & Economía Circular</option>
+                  <option value="tecnologia">Tecnología &amp; Software</option>
+                  <option value="salud">Salud &amp; Biotecnología</option>
+                  <option value="diseno">Diseño &amp; Hardware</option>
+                  <option value="energia">Energía Limpia &amp; Clima</option>
+                  <option value="agro">Agro &amp; Bioeconomía</option>
+                  <option value="sustentabilidad">Sustentabilidad &amp; Reforestación</option>
                 </select>
               </div>
 
@@ -143,32 +145,32 @@ export const PublicarScreen: React.FC<PublicarScreenProps> = ({
                   name="location"
                   value={formData.location}
                   onChange={handleChange}
-                  placeholder="Ej. San Javier, Traslasierra, Córdoba"
+                  placeholder="Ej. Buenos Aires, Córdoba, Santiago, Remoto..."
                   className="w-full p-3 rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface focus:outline-none focus:border-primary text-sm"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block font-semibold text-on-surface mb-1">Resumen Ejecutivo & Misión</label>
+              <label className="block font-semibold text-on-surface mb-1">Resumen Ejecutivo &amp; Misión</label>
               <textarea
                 name="description"
                 rows={3}
                 value={formData.description}
                 onChange={handleChange}
-                placeholder="Describe el objetivo productivo, los beneficiarios y la solución al agotamiento del suelo..."
+                placeholder="Describe la propuesta de valor, el problema que resuelve, clientes objetivo y plan de escalamiento..."
                 className="w-full p-3 rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface focus:outline-none focus:border-primary text-sm"
               />
             </div>
 
             <div>
-              <label className="block font-semibold text-on-surface mb-1">Impacto Ecológico Proyectado</label>
+              <label className="block font-semibold text-on-surface mb-1">Métricas de Tracción o Impacto Proyectadas</label>
               <input
                 type="text"
                 name="impactTarget"
                 value={formData.impactTarget}
                 onChange={handleChange}
-                placeholder="Ej. 140 ton CO2eq/año secuestradas, +40% materia orgánica"
+                placeholder="Ej. 10.000 usuarios activos mensuales, 120 ton CO2eq/año o $50k MRR"
                 className="w-full p-3 rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface focus:outline-none focus:border-primary text-sm"
               />
             </div>
@@ -295,31 +297,31 @@ export const PublicarScreen: React.FC<PublicarScreenProps> = ({
         <div className="bg-surface-container-lowest rounded-3xl p-6 sm:p-8 border border-outline-variant/30 space-y-6">
           <h2 className="text-lg font-bold text-on-surface flex items-center gap-2">
             <span className="material-symbols-outlined text-primary">gavel</span>
-            Paso 3: Certeza Jurídica de la Tierra & Asignación de Auditor
+            Paso 3: Certeza Jurídica, Propiedad Intelectual &amp; Auditoría Técnica
           </h2>
 
           <div className="space-y-4 text-xs">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block font-semibold text-on-surface mb-1">Título de Propiedad / Matrícula</label>
+                <label className="block font-semibold text-on-surface mb-1">Razón Social / Registro de Entidad o Titularidad</label>
                 <input
                   type="text"
                   name="propertyTitle"
                   value={formData.propertyTitle}
                   onChange={handleChange}
-                  placeholder="Ej. Escritura Nº 142 · Folio Real 14-08"
+                  placeholder="Ej. S.A.S. / SRL / Escritura / Patente INPI #4819"
                   className="w-full p-3 rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface focus:outline-none focus:border-primary text-sm"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-on-surface mb-1">Nomenclatura Catastral</label>
+                <label className="block font-semibold text-on-surface mb-1">Identificación Fiscal / Matrícula</label>
                 <input
                   type="text"
                   name="cadastralNumber"
                   value={formData.cadastralNumber}
                   onChange={handleChange}
-                  placeholder="Ej. Catastro 14-03-02-19842"
+                  placeholder="Ej. CUIT 30-71829384-2 / Folio Catastral / Registro"
                   className="w-full p-3 rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface focus:outline-none focus:border-primary text-sm"
                 />
               </div>
@@ -328,10 +330,10 @@ export const PublicarScreen: React.FC<PublicarScreenProps> = ({
             <div className="p-4 rounded-xl bg-primary-fixed/20 border border-primary/30 space-y-2">
               <div className="font-bold text-on-surface flex items-center gap-2 text-sm">
                 <span className="material-symbols-outlined text-primary">verified_user</span>
-                Auditoría Colegiada Asignada Automáticamente
+                Auditoría Técnica Imparcial por Sector
               </div>
               <p className="text-outline text-xs leading-relaxed">
-                El sistema de Seed & Grow sorteará un perito del <strong>Colegio de Ingenieros Agrónomos (CIAPC / Red Nacional)</strong> sin relación previa con el promotor para garantizar imparcialidad total en las inspecciones.
+                El protocolo de Seed &amp; Grow asigna un perito auditor acreditado e imparcial según la disciplina de tu proyecto (ingeniería técnica, auditoría contable colegiada, peritaje agronómico o tecnológico) para fiscalizar las evidencias antes de cada desembolso.
               </p>
             </div>
           </div>

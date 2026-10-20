@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { ScreenView, UserRole, Project } from './types';
+import { useState } from 'react';
+import { ScreenView, UserRole, Project, Investment, UserAccount } from './types';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { ExplorarScreen } from './components/ExplorarScreen';
@@ -9,8 +9,10 @@ import { AuditorScreen } from './components/AuditorScreen';
 import { CarteraScreen } from './components/CarteraScreen';
 import { PublicarScreen } from './components/PublicarScreen';
 import { LoginScreen } from './components/LoginScreen';
+import { GobernanzaScreen } from './components/GobernanzaScreen';
 import { InvestModal, VotingModal } from './components/Modals';
-import { INITIAL_PROJECTS } from './data/mockData';
+import { NftContractModal } from './components/NftContractModal';
+import { INITIAL_PROJECTS, INITIAL_INVESTMENTS } from './data/mockData';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenView>('explorar');
@@ -19,6 +21,20 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(INITIAL_PROJECTS[2]); // Default Raíz Circular
   const [voteModalOpen, setVoteModalOpen] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Authenticated User State (supports Web3 Wallet or Google)
+  const [currentUser, setCurrentUser] = useState<UserAccount | null>({
+    type: 'google',
+    addressOrEmail: 'agusfau@gmail.com',
+    name: 'agusfau',
+    network: 'Base Sepolia',
+    balanceUSDC: 3450,
+  });
+
+  // NFT & Smart Contract Explorer Modal state
+  const [nftModalOpen, setNftModalOpen] = useState<boolean>(false);
+  const [selectedInvestmentForNft, setSelectedInvestmentForNft] = useState<Investment | null>(INITIAL_INVESTMENTS[0]);
+  const [nftModalTab, setNftModalTab] = useState<'nft' | 'contract'>('nft');
 
   const handleNavigate = (screen: ScreenView) => {
     setCurrentScreen(screen);
@@ -66,6 +82,12 @@ export default function App() {
         userRole={userRole}
         onRoleChange={setUserRole}
         bookmarksCount={2}
+        currentUser={currentUser}
+        onLogout={() => {
+          setCurrentUser(null);
+          setToastMessage('Has cerrado sesión correctamente');
+          setTimeout(() => setToastMessage(null), 3500);
+        }}
       />
 
       {/* Main Content Area */}
@@ -81,6 +103,10 @@ export default function App() {
           <SeguimientoScreen
             onNavigate={handleNavigate}
             onOpenInvestModal={handleOpenInvest}
+            onOpenContractModal={() => {
+              setNftModalTab('contract');
+              setNftModalOpen(true);
+            }}
           />
         )}
 
@@ -98,9 +124,26 @@ export default function App() {
           />
         )}
 
+        {currentScreen === 'gobernanza' && (
+          <GobernanzaScreen
+            onNavigate={handleNavigate}
+            onOpenVoteModal={() => setVoteModalOpen(true)}
+            onOpenContractModal={() => {
+              setNftModalTab('contract');
+              setNftModalOpen(true);
+            }}
+          />
+        )}
+
         {currentScreen === 'cartera' && (
           <CarteraScreen
             onNavigate={handleNavigate}
+            currentUser={currentUser}
+            onOpenNftModal={(inv) => {
+              setSelectedInvestmentForNft(inv);
+              setNftModalTab('nft');
+              setNftModalOpen(true);
+            }}
           />
         )}
 
@@ -113,9 +156,17 @@ export default function App() {
         {currentScreen === 'login' && (
           <LoginScreen
             onNavigate={handleNavigate}
-            onLoginSuccess={(email) => {
-              setToastMessage(`Bienvenido, sesión iniciada como ${email || 'usuario'}`);
-              setTimeout(() => setToastMessage(null), 4000);
+            currentUser={currentUser}
+            onLogout={() => {
+              setCurrentUser(null);
+              setToastMessage('Has cerrado sesión correctamente');
+              setTimeout(() => setToastMessage(null), 3500);
+            }}
+            onLoginSuccess={(user) => {
+              setCurrentUser(user);
+              const label = user.type === 'wallet' ? 'Billetera Web3' : user.type === 'google' ? 'Google' : 'Email';
+              setToastMessage(`¡Conexión exitosa! Sesión iniciada con ${label} (${user.addressOrEmail})`);
+              setTimeout(() => setToastMessage(null), 5000);
             }}
           />
         )}
@@ -130,6 +181,7 @@ export default function App() {
         onClose={() => setInvestModalOpen(false)}
         project={selectedProject}
         onConfirmInvest={handleConfirmInvest}
+        currentUser={currentUser}
       />
 
       <VotingModal
@@ -139,6 +191,14 @@ export default function App() {
         projectTitle="Biofábrica Serrana de Insumos Vivos"
         amount="$5,000 USDC"
         onVoteSuccess={handleVoteSuccess}
+        currentUser={currentUser}
+      />
+
+      <NftContractModal
+        isOpen={nftModalOpen}
+        onClose={() => setNftModalOpen(false)}
+        investment={selectedInvestmentForNft}
+        initialTab={nftModalTab}
       />
     </div>
   );

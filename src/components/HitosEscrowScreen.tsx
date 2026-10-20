@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ScreenView, Milestone } from '../types';
 import { BIOFABRICA_MILESTONES, BIOFABRICA_PROJECT_DETAILS } from '../data/mockData';
+import { ProjectDataVisualization } from './ProjectDataVisualization';
 
 interface HitosEscrowScreenProps {
   onNavigate: (screen: ScreenView) => void;
@@ -16,6 +17,7 @@ export const HitosEscrowScreen: React.FC<HitosEscrowScreenProps> = ({
   const [hasVoted, setHasVoted] = useState<boolean>(false);
   const [voteType, setVoteType] = useState<'favor' | 'contra' | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [showChart, setShowChart] = useState<boolean>(false);
 
   const activeMilestone = BIOFABRICA_MILESTONES.find((m) => m.status === 'audit_active') || BIOFABRICA_MILESTONES[1];
 
@@ -66,7 +68,14 @@ export const HitosEscrowScreen: React.FC<HitosEscrowScreenProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
+          <button
+            onClick={() => setShowChart(!showChart)}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary-fixed/40 hover:bg-primary-fixed text-primary font-bold text-xs border border-primary/20 transition"
+          >
+            <span className="material-symbols-outlined text-base">insights</span>
+            {showChart ? 'Ocultar Gráficos' : 'Ver Gráficos Recharts Escrow'}
+          </button>
           <button
             onClick={() => onNavigate('auditor')}
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-on-surface font-semibold text-xs border border-outline-variant/30 transition"
@@ -83,6 +92,18 @@ export const HitosEscrowScreen: React.FC<HitosEscrowScreenProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Recharts Data Visualization Section if toggled */}
+      {showChart && (
+        <div className="animate-fadeIn">
+          <ProjectDataVisualization
+            goalAmount={BIOFABRICA_PROJECT_DETAILS.goalAmount}
+            fundedAmount={BIOFABRICA_PROJECT_DETAILS.fundedAmount}
+            currency="USDC"
+            smartContractAddress={BIOFABRICA_PROJECT_DETAILS.smartContractAddress}
+          />
+        </div>
+      )}
 
       {/* Escrow Smart Vault Banner */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

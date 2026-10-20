@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Project } from '../types';
+import { Project, UserAccount } from '../types';
 
 interface InvestModalProps {
   project: Project | null;
   isOpen: boolean;
   onClose: () => void;
   onConfirmInvest: (projectId: string, amount: number) => void;
+  currentUser?: UserAccount | null;
 }
 
 export const InvestModal: React.FC<InvestModalProps> = ({
@@ -13,6 +14,7 @@ export const InvestModal: React.FC<InvestModalProps> = ({
   isOpen,
   onClose,
   onConfirmInvest,
+  currentUser,
 }) => {
   const [amount, setAmount] = useState(100);
   const [paymentMethod, setPaymentMethod] = useState<'usdc' | 'card' | 'bank'>('usdc');
@@ -163,6 +165,18 @@ export const InvestModal: React.FC<InvestModalProps> = ({
               </div>
             </div>
 
+            {currentUser ? (
+              <div className="p-2.5 bg-[#ecfdf5] rounded-xl border border-[#a7f3d0] flex items-center justify-between text-xs">
+                <span className="text-[#065f46] flex items-center gap-1.5 font-medium">
+                  <span className="w-2 h-2 rounded-full bg-[#10b981]"></span>
+                  <span>Firmando desde:</span>
+                </span>
+                <span className="font-mono font-bold text-[#064e3b] truncate max-w-[170px]">
+                  {currentUser.addressOrEmail}
+                </span>
+              </div>
+            ) : null}
+
             <div className="p-3 bg-[#e6e2dd]/40 rounded-lg text-[11px] text-[#414844] flex items-start gap-2">
               <span className="material-symbols-outlined text-[#006c48] text-[16px] shrink-0 mt-0.5">verified_user</span>
               <span>Los fondos se custodian en contratos multifirma. La liberación se vota en cada hito con más del 60% de quórum.</span>
@@ -180,7 +194,7 @@ export const InvestModal: React.FC<InvestModalProps> = ({
                 type="button"
                 disabled={isProcessing}
                 onClick={handleInvest}
-                className="w-2/3 py-2.5 rounded-lg bg-[#012d1d] hover:bg-[#1b4332] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md"
+                className="w-2/3 py-2.5 rounded-lg bg-[#012d1d] hover:bg-[#1b4332] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md cursor-pointer"
               >
                 {isProcessing ? (
                   <>
@@ -209,6 +223,7 @@ interface VotingModalProps {
   projectTitle: string;
   amount: string;
   onVoteSuccess: () => void;
+  currentUser?: UserAccount | null;
 }
 
 export const VotingModal: React.FC<VotingModalProps> = ({
@@ -218,6 +233,7 @@ export const VotingModal: React.FC<VotingModalProps> = ({
   projectTitle,
   amount,
   onVoteSuccess,
+  currentUser,
 }) => {
   const [selectedVote, setSelectedVote] = useState<'yes' | 'no' | 'abstain'>('yes');
   const [comment, setComment] = useState('');
@@ -333,6 +349,18 @@ export const VotingModal: React.FC<VotingModalProps> = ({
                 rows={2}
               ></textarea>
             </div>
+
+            {currentUser ? (
+              <div className="p-2.5 bg-[#ecfdf5] rounded-xl border border-[#a7f3d0] flex items-center justify-between text-xs">
+                <span className="text-[#065f46] flex items-center gap-1.5 font-medium">
+                  <span className="w-2 h-2 rounded-full bg-[#10b981]"></span>
+                  <span>Votando con:</span>
+                </span>
+                <span className="font-mono font-bold text-[#064e3b] truncate max-w-[190px]">
+                  {currentUser.addressOrEmail}
+                </span>
+              </div>
+            ) : null}
 
             <div className="flex gap-3 pt-2">
               <button

@@ -1,6 +1,6 @@
 {
   "name": "Seed & Grow",
-  "description": "Plataforma de financiamiento colectivo regenerativo, custodia escrow inteligente y rendición comunitaria transparente.",
+  "description": "Plataforma de capital semilla y financiamiento colectivo con custodia escrow inteligente y rendición transparente por hitos para proyectos y startups.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
