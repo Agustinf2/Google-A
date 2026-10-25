@@ -121,6 +121,7 @@ export default function App() {
           <AuditorScreen
             onNavigate={handleNavigate}
             userRole={userRole}
+            currentUser={currentUser}
           />
         )}
 

@@ -1,0 +1,90 @@
+{
+  "entities": {
+    "AuditValidation": {
+      "title": "Audit Validation",
+      "description": "Certificado y dictamen digital de auditoría firmado por un auditor matriculado sobre un documento técnico o agronómico.",
+      "type": "object",
+      "properties": {
+        "documentCode": {
+          "type": "string",
+          "description": "Código identificatorio único del documento auditado",
+          "maxLength": 100
+        },
+        "documentTitle": {
+          "type": "string",
+          "description": "Título o descripción del documento o lote auditado",
+          "maxLength": 200
+        },
+        "lotId": {
+          "type": "string",
+          "description": "Identificador del lote agrícola asociado",
+          "maxLength": 50
+        },
+        "auditorUid": {
+          "type": "string",
+          "description": "UID de Firebase Authentication del auditor firmante",
+          "maxLength": 128
+        },
+        "auditorName": {
+          "type": "string",
+          "description": "Nombre completo y matrícula profesional del auditor",
+          "maxLength": 150
+        },
+        "auditorEmail": {
+          "type": "string",
+          "description": "Correo electrónico verificado del auditor",
+          "maxLength": 150
+        },
+        "verdict": {
+          "type": "string",
+          "description": "Dictamen oficial del auditor",
+          "enum": ["Aprobado", "Con Observaciones", "Rechazado"]
+        },
+        "score": {
+          "type": "number",
+          "description": "Puntaje de conformidad técnica asignado (0 a 100)"
+        },
+        "remarks": {
+          "type": "string",
+          "description": "Observaciones técnicas, hallazgos y fundamento del dictamen",
+          "maxLength": 2000
+        },
+        "signatureHash": {
+          "type": "string",
+          "description": "Hash criptográfico de la firma digital (Keccak-256 o SHA-256)",
+          "maxLength": 128
+        },
+        "signerPublicKey": {
+          "type": "string",
+          "description": "Clave pública ECDSA o identificador de clave notarial del auditor",
+          "maxLength": 128
+        },
+        "inspectionId": {
+          "type": "string",
+          "description": "Código de acta de inspección en sitio",
+          "maxLength": 100
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Marca de tiempo de registro en Firestore"
+        }
+      },
+      "required": [
+        "documentCode",
+        "documentTitle",
+        "auditorUid",
+        "auditorName",
+        "verdict",
+        "signatureHash",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/audit_validations/{validationId}": {
+      "schema": "AuditValidation",
+      "description": "Colección de firmas digitales y dictámenes de auditoría registrados por auditores técnicos sobre documentos del protocolo."
+    }
+  }
+}

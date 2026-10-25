@@ -1,0 +1,81 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default-deny safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Connection check document
+    match /test/{docId} {
+      allow read: if true;
+    }
+
+    // Primitive validation helpers
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidAuditValidation(data) {
+      return data.keys().hasAll([
+        'documentCode',
+        'documentTitle',
+        'auditorUid',
+        'auditorName',
+        'verdict',
+        'signatureHash',
+        'createdAt'
+      ]) &&
+      data.keys().hasOnly([
+        'documentCode',
+        'documentTitle',
+        'lotId',
+        'auditorUid',
+        'auditorName',
+        'auditorEmail',
+        'verdict',
+        'score',
+        'remarks',
+        'signatureHash',
+        'signerPublicKey',
+        'inspectionId',
+        'createdAt'
+      ]) &&
+      data.auditorUid == request.auth.uid &&
+      data.documentCode is string && data.documentCode.size() <= 100 &&
+      data.documentTitle is string && data.documentTitle.size() <= 200 &&
+      (!('lotId' in data) || (data.lotId is string && data.lotId.size() <= 50)) &&
+      data.auditorUid is string && data.auditorUid.size() <= 128 &&
+      data.auditorName is string && data.auditorName.size() <= 150 &&
+      (!('auditorEmail' in data) || (data.auditorEmail is string && data.auditorEmail.size() <= 150)) &&
+      data.verdict in ['Aprobado', 'Con Observaciones', 'Rechazado'] &&
+      (!('score' in data) || (data.score is number && data.score >= 0 && data.score <= 100)) &&
+      (!('remarks' in data) || (data.remarks is string && data.remarks.size() <= 2000)) &&
+      data.signatureHash is string && data.signatureHash.size() <= 128 &&
+      (!('signerPublicKey' in data) || (data.signerPublicKey is string && data.signerPublicKey.size() <= 128)) &&
+      (!('inspectionId' in data) || (data.inspectionId is string && data.inspectionId.size() <= 100)) &&
+      data.createdAt == request.time;
+    }
+
+    // Audit Digital Signatures & Validations collection
+    match /audit_validations/{validationId} {
+      allow get, list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(validationId) && isValidAuditValidation(incoming());
+      allow update, delete: if false; // Immutable audit trail
+    }
+  }
+}
