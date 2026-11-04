@@ -8,11 +8,13 @@ import {
   AuditValidationRecord,
   testFirestoreConnection,
 } from '../lib/firebase';
+import { createAuditPdf } from '../lib/generateAuditPdf';
 
 interface AuditorScreenProps {
   onNavigate: (screen: ScreenView) => void;
   userRole?: UserRole;
   currentUser?: UserAccount | null;
+  onRoleChange?: (role: UserRole) => void;
 }
 
 export interface TechnicalDocument {
@@ -128,6 +130,7 @@ export const AuditorScreen: React.FC<AuditorScreenProps> = ({
   onNavigate,
   userRole = 'auditor',
   currentUser,
+  onRoleChange,
 }) => {
   const report = AUDITOR_REPORT;
   const [activeTab, setActiveTab] = useState<'documentos' | 'expediente' | 'firestore'>('documentos');
@@ -193,6 +196,21 @@ export const AuditorScreen: React.FC<AuditorScreenProps> = ({
   const showToast = (message: string, type: 'success' | 'info' | 'error' = 'success') => {
     setToast({ message, type });
     setTimeout(() => setToast(null), 5000);
+  };
+
+  const handleDownloadPdfWithCharts = () => {
+    try {
+      const doc = createAuditPdf();
+      doc.save('informe_auditoria_biofabrica_con_graficos.pdf');
+      showToast('¡Generando y descargando PDF con gráficos de asignación presupuestaria y telemetría!', 'success');
+    } catch (err) {
+      console.error('Error generating PDF:', err);
+      const link = document.createElement('a');
+      link.href = '/informe_auditoria_biofabrica_con_graficos.pdf';
+      link.download = 'informe_auditoria_biofabrica_con_graficos.pdf';
+      link.click();
+      showToast('Descargando copia oficial del informe PDF con gráficos...', 'info');
+    }
   };
 
   // Generate deterministic digital signature hash based on doc and audit fields
@@ -334,7 +352,21 @@ export const AuditorScreen: React.FC<AuditorScreenProps> = ({
         {/* Global Action Buttons */}
         <div className="flex items-center gap-2 flex-wrap">
           <button
-            onClick={() => handleOpenSignModal()}
+            onClick={handleDownloadPdfWithCharts}
+            className="px-4 py-2.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-on-surface font-semibold text-xs border border-outline-variant/30 flex items-center gap-2 transition cursor-pointer shadow-xs"
+            title="Descargar Informe Oficial en PDF con gráficos de asignación presupuestaria y telemetría"
+          >
+            <span className="material-symbols-outlined text-base text-primary">picture_as_pdf</span>
+            Descargar PDF con Gráficos
+          </button>
+          <button
+            onClick={() => {
+              if (userRole !== 'auditor' && onRoleChange) {
+                onRoleChange('auditor');
+                showToast('Activando credenciales de Auditor Colegiado para emitir dictamen...', 'info');
+              }
+              handleOpenSignModal();
+            }}
             className="px-4 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-xs hover:bg-primary-container transition shadow-md flex items-center gap-2 cursor-pointer"
           >
             <span className="material-symbols-outlined text-base">draw</span>
@@ -349,6 +381,46 @@ export const AuditorScreen: React.FC<AuditorScreenProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Role Permission Context Banner */}
+      {userRole !== 'auditor' ? (
+        <div className="p-4 rounded-2xl bg-amber-50 border border-amber-300 text-amber-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-xs animate-fadeIn">
+          <div className="flex items-center gap-2.5">
+            <span className="material-symbols-outlined text-amber-600 text-xl">info</span>
+            <div>
+              <span className="font-bold">Modo Solo Consulta:</span> Estás visualizando este expediente con el rol de{' '}
+              <strong className="underline">
+                {userRole === 'investor' ? 'Inversor (Martina)' : 'Creador (Mariano Peralta)'}
+              </strong>.
+              Para registrar firmas digitales con validez notarial en Firestore DB, debes actuar con permisos de Auditor Colegiado.
+            </div>
+          </div>
+          {onRoleChange && (
+            <button
+              onClick={() => {
+                onRoleChange('auditor');
+                showToast('¡Has cambiado al rol de Auditor Colegiado! Permisos de firma desbloqueados.', 'success');
+              }}
+              className="px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shrink-0 transition flex items-center gap-1.5 cursor-pointer shadow-xs"
+            >
+              <span className="material-symbols-outlined text-sm">gavel</span>
+              Activar Rol Auditor
+            </button>
+          )}
+        </div>
+      ) : (
+        <div className="p-3.5 rounded-2xl bg-blue-50 border border-blue-200 text-blue-900 flex items-center justify-between text-xs animate-fadeIn">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-blue-600 text-base">verified_user</span>
+            <span>
+              <strong>Permisos de Auditor Habilitados:</strong> Ing. Agr. Valentín Morales (CIAPC Mat. 4819) · Habilitado para dictamen oficial y firma inmutable en Firestore DB.
+            </span>
+          </div>
+          <span className="text-[10px] font-mono bg-white px-2 py-0.5 rounded border border-blue-200 text-blue-700 font-bold hidden sm:inline-block">
+            Base de Datos: serene-rex-tvr20
+          </span>
+        </div>
+      )}
 
       {/* Navigation Tabs */}
       <div className="flex items-center gap-2 border-b border-outline-variant/30 pb-2">

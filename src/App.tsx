@@ -114,6 +114,8 @@ export default function App() {
           <HitosEscrowScreen
             onNavigate={handleNavigate}
             onOpenVoteModal={() => setVoteModalOpen(true)}
+            userRole={userRole}
+            onRoleChange={setUserRole}
           />
         )}
 
@@ -122,6 +124,7 @@ export default function App() {
             onNavigate={handleNavigate}
             userRole={userRole}
             currentUser={currentUser}
+            onRoleChange={setUserRole}
           />
         )}
 
@@ -133,6 +136,8 @@ export default function App() {
               setNftModalTab('contract');
               setNftModalOpen(true);
             }}
+            userRole={userRole}
+            onRoleChange={setUserRole}
           />
         )}
 
@@ -151,6 +156,8 @@ export default function App() {
         {currentScreen === 'publicar' && (
           <PublicarScreen
             onNavigate={handleNavigate}
+            userRole={userRole}
+            onRoleChange={setUserRole}
           />
         )}
 

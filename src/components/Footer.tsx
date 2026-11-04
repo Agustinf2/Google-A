@@ -83,6 +83,19 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   Publicar proyecto
                 </button>
               </li>
+              <li className="pt-1 border-t border-[#ece7e2]">
+                <a
+                  href="/manual_blockchain_desde_cero_con_graficos.pdf"
+                  download="manual_blockchain_desde_cero_con_graficos.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#012d1d] transition-colors inline-flex items-center gap-1.5 font-bold text-primary"
+                  title="Descargar Manual Técnico de Blockchain con Gráficos en PDF"
+                >
+                  <span className="material-symbols-outlined text-[15px]">picture_as_pdf</span>
+                  <span>Manual Blockchain (PDF)</span>
+                </a>
+              </li>
             </ul>
           </div>
 

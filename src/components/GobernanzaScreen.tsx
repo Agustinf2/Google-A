@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { ScreenView, Milestone } from '../types';
+import { ScreenView, Milestone, UserRole } from '../types';
 import { GOVERNANCE_DATA, GovernanceProjectItem } from '../data/mockData';
 import {
   ResponsiveContainer,
@@ -19,12 +19,16 @@ interface GobernanzaScreenProps {
   onNavigate: (screen: ScreenView) => void;
   onOpenVoteModal?: (milestone: Milestone) => void;
   onOpenContractModal?: () => void;
+  userRole?: UserRole;
+  onRoleChange?: (role: UserRole) => void;
 }
 
 export const GobernanzaScreen: React.FC<GobernanzaScreenProps> = ({
   onNavigate,
   onOpenVoteModal,
   onOpenContractModal,
+  userRole = 'investor',
+  onRoleChange,
 }) => {
   const [selectedSort, setSelectedSort] = useState<'participacion' | 'salud' | 'votacion_activa' | 'escrow'>('participacion');
   const [selectedCategory, setSelectedCategory] = useState<string>('todos');
@@ -88,9 +92,30 @@ export const GobernanzaScreen: React.FC<GobernanzaScreenProps> = ({
         <div className="absolute -left-20 -bottom-20 h-80 w-80 rounded-full bg-tertiary-container/20 blur-3xl pointer-events-none" />
 
         <div className="relative z-10 space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-full bg-primary-fixed/20 px-3.5 py-1 backdrop-blur-md border border-primary-fixed/30 text-primary-fixed text-xs font-semibold uppercase tracking-wider">
-            <span className="material-symbols-outlined text-sm">how_to_vote</span>
-            Gobernanza On-Chain &amp; Transparencia Comunitaria
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary-fixed/20 px-3.5 py-1 backdrop-blur-md border border-primary-fixed/30 text-primary-fixed text-xs font-semibold uppercase tracking-wider">
+              <span className="material-symbols-outlined text-sm">how_to_vote</span>
+              Gobernanza On-Chain &amp; Transparencia Comunitaria
+            </div>
+
+            <div
+              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold backdrop-blur-md border ${
+                userRole === 'investor'
+                  ? 'bg-emerald-500/20 text-emerald-200 border-emerald-400/40'
+                  : userRole === 'creator'
+                  ? 'bg-amber-500/20 text-amber-200 border-amber-400/40'
+                  : 'bg-blue-500/20 text-blue-200 border-blue-400/40'
+              }`}
+            >
+              <span className="w-2 h-2 rounded-full bg-current animate-pulse" />
+              <span>
+                {userRole === 'investor'
+                  ? 'Poder de Voto Activo: Inversor Aportante'
+                  : userRole === 'creator'
+                  ? 'Modo Observador: Promotor / Creador'
+                  : 'Modo Asesor: Auditor Colegiado'}
+              </span>
+            </div>
           </div>
 
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-surface">

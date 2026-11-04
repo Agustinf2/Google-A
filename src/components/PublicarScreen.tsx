@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
-import { ScreenView } from '../types';
+import { ScreenView, UserRole } from '../types';
 
 interface PublicarScreenProps {
   onNavigate: (screen: ScreenView) => void;
   onProjectCreated?: (newProject: any) => void;
+  userRole?: UserRole;
+  onRoleChange?: (role: UserRole) => void;
 }
 
 export const PublicarScreen: React.FC<PublicarScreenProps> = ({
   onNavigate,
   onProjectCreated,
+  userRole = 'creator',
+  onRoleChange,
 }) => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [isDeploying, setIsDeploying] = useState<boolean>(false);
@@ -67,12 +71,49 @@ export const PublicarScreen: React.FC<PublicarScreenProps> = ({
 
         <button
           onClick={() => onNavigate('explorar')}
-          className="text-xs text-outline hover:text-on-surface font-semibold flex items-center gap-1 self-start sm:self-auto"
+          className="text-xs text-outline hover:text-on-surface font-semibold flex items-center gap-1 self-start sm:self-auto cursor-pointer"
         >
           <span className="material-symbols-outlined text-sm">close</span>
           Cancelar
         </button>
       </div>
+
+      {/* Role Permission Context */}
+      {userRole !== 'creator' ? (
+        <div className="p-4 rounded-2xl bg-amber-50 border border-amber-300 text-amber-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-xs animate-fadeIn">
+          <div className="flex items-center gap-2.5">
+            <span className="material-symbols-outlined text-amber-600 text-xl">lock</span>
+            <div>
+              <span className="font-bold">Permiso Exclusivo de Creador / Promotor:</span> Estás navegando con el rol de{' '}
+              <strong className="underline">
+                {userRole === 'investor' ? 'Inversor (Martina)' : 'Auditor (Ing. Morales)'}
+              </strong>.
+              Para postular nuevos proyectos y desplegar contratos escrow en Base Sepolia, debes usar el rol de Creador.
+            </div>
+          </div>
+          {onRoleChange && (
+            <button
+              onClick={() => onRoleChange('creator')}
+              className="px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shrink-0 transition flex items-center gap-1.5 cursor-pointer shadow-xs"
+            >
+              <span className="material-symbols-outlined text-sm">agriculture</span>
+              Activar Rol Creador
+            </button>
+          )}
+        </div>
+      ) : (
+        <div className="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-200 text-amber-900 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-amber-700 text-base">verified</span>
+            <span>
+              <strong>Permiso de Creador Activo:</strong> Mariano Peralta (Cooperativa) · Autorizado para postular lotes, estructurar presupuestos y convocar inversores.
+            </span>
+          </div>
+          <span className="text-[10px] font-mono bg-white px-2 py-0.5 rounded border border-amber-200 text-amber-800 font-bold hidden sm:inline-block">
+            Escrow ERC-20
+          </span>
+        </div>
+      )}
 
       {/* Step Stepper */}
       <div className="grid grid-cols-4 gap-2">

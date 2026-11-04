@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScreenView, Milestone } from '../types';
+import { ScreenView, Milestone, UserRole } from '../types';
 import { BIOFABRICA_MILESTONES, BIOFABRICA_PROJECT_DETAILS } from '../data/mockData';
 import { ProjectDataVisualization } from './ProjectDataVisualization';
 
@@ -7,12 +7,16 @@ interface HitosEscrowScreenProps {
   onNavigate: (screen: ScreenView) => void;
   onOpenVoteModal?: (milestone: Milestone) => void;
   onOpenEvidenceModal?: (title: string, items: any[]) => void;
+  userRole?: UserRole;
+  onRoleChange?: (role: UserRole) => void;
 }
 
 export const HitosEscrowScreen: React.FC<HitosEscrowScreenProps> = ({
   onNavigate,
   onOpenVoteModal,
   onOpenEvidenceModal,
+  userRole = 'investor',
+  onRoleChange,
 }) => {
   const [hasVoted, setHasVoted] = useState<boolean>(false);
   const [voteType, setVoteType] = useState<'favor' | 'contra' | null>(null);
@@ -194,42 +198,118 @@ export const HitosEscrowScreen: React.FC<HitosEscrowScreenProps> = ({
             </div>
           </div>
 
-          {/* Voting Action Area */}
-          <div className="pt-4 border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="text-xs text-outline">
-              {hasVoted ? (
-                <div className="text-primary font-bold flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-base">check_circle</span>
-                  Ya has participado con tu firma en este hito (Voto: {voteType === 'favor' ? 'Aprobado' : 'Impugnado'}).
+          {/* Role-Aware Action Area */}
+          <div className="pt-4 border-t border-outline-variant/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="text-xs text-outline space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-on-surface">Permiso por Rol:</span>
+                <span
+                  className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                    userRole === 'investor'
+                      ? 'bg-emerald-100 text-emerald-800'
+                      : userRole === 'creator'
+                      ? 'bg-amber-100 text-amber-800'
+                      : 'bg-blue-100 text-blue-800'
+                  }`}
+                >
+                  {userRole === 'investor'
+                    ? 'Inversor Aportante'
+                    : userRole === 'creator'
+                    ? 'Creador / Beneficiario'
+                    : 'Auditor Colegiado'}
+                </span>
+              </div>
+
+              {userRole === 'investor' && (
+                <div>
+                  {hasVoted ? (
+                    <div className="text-primary font-bold flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-base">check_circle</span>
+                      Ya has participado con tu firma en este hito (Voto: {voteType === 'favor' ? 'Aprobado' : 'Impugnado'}).
+                    </div>
+                  ) : (
+                    <span>Como aportante verificado, tu firma criptográfica autoriza el desembolso.</span>
+                  )}
                 </div>
-              ) : (
-                <span>Como aportante verificado, tu firma criptográfica autoriza el desembolso.</span>
+              )}
+
+              {userRole === 'creator' && (
+                <div className="text-amber-800 font-medium">
+                  Eres el promotor ejecutor de obra. No puedes auto-aprobarte fondos; debes aguardar la asamblea y el dictamen pericial.
+                </div>
+              )}
+
+              {userRole === 'auditor' && (
+                <div className="text-blue-800 font-medium">
+                  Tu dictamen agronómico y firma digital en Firestore son la condición técnica del smart contract multi-sig 3/5.
+                </div>
               )}
             </div>
 
-            <div className="flex items-center gap-3 w-full sm:w-auto">
-              <button
-                onClick={() => handleQuickVote(false)}
-                className={`flex-1 sm:flex-none px-4 py-2.5 rounded-xl font-bold text-xs transition border ${
-                  voteType === 'contra'
-                    ? 'bg-error text-white border-error'
-                    : 'bg-surface text-error border-error/30 hover:bg-error/10'
-                }`}
-              >
-                Impugnar / Pedir Datos
-              </button>
+            {/* Buttons dynamically swapped according to role permissions */}
+            <div className="flex items-center gap-2.5 w-full md:w-auto flex-wrap">
+              {userRole === 'investor' && (
+                <>
+                  <button
+                    onClick={() => handleQuickVote(false)}
+                    className={`flex-1 md:flex-none px-4 py-2.5 rounded-xl font-bold text-xs transition border cursor-pointer ${
+                      voteType === 'contra'
+                        ? 'bg-error text-white border-error'
+                        : 'bg-surface text-error border-error/30 hover:bg-error/10'
+                    }`}
+                  >
+                    Impugnar / Pedir Datos
+                  </button>
 
-              <button
-                onClick={() => handleQuickVote(true)}
-                className={`flex-1 sm:flex-none px-6 py-2.5 rounded-xl font-bold text-xs transition shadow-md flex items-center justify-center gap-2 ${
-                  voteType === 'favor'
-                    ? 'bg-primary-container text-on-primary'
-                    : 'bg-primary text-on-primary hover:bg-primary-container'
-                }`}
-              >
-                <span className="material-symbols-outlined text-base">how_to_vote</span>
-                Votar Aprobación de Desembolso
-              </button>
+                  <button
+                    onClick={() => handleQuickVote(true)}
+                    className={`flex-1 md:flex-none px-6 py-2.5 rounded-xl font-bold text-xs transition shadow-md flex items-center justify-center gap-2 cursor-pointer ${
+                      voteType === 'favor'
+                        ? 'bg-primary-container text-on-primary'
+                        : 'bg-primary text-on-primary hover:bg-primary-container'
+                    }`}
+                  >
+                    <span className="material-symbols-outlined text-base">how_to_vote</span>
+                    Votar Aprobación de Desembolso
+                  </button>
+                </>
+              )}
+
+              {userRole === 'creator' && (
+                <>
+                  <button
+                    onClick={() => {
+                      setToastMessage('Comprobante de factura y remito subidos a IPFS (CID: bafybei...849e)');
+                      setTimeout(() => setToastMessage(null), 4000);
+                    }}
+                    className="flex-1 md:flex-none px-4 py-2.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-on-surface font-semibold text-xs border border-outline-variant/30 flex items-center justify-center gap-2 transition cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-base text-primary">cloud_upload</span>
+                    Cargar Nueva Evidencia
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setToastMessage('Notificación enviada al Colegio de Ingenieros Agrónomos para inspección');
+                      setTimeout(() => setToastMessage(null), 4000);
+                    }}
+                    className="flex-1 md:flex-none px-5 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-xs hover:bg-primary-container transition shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <span className="material-symbols-outlined text-base">notifications_active</span>
+                    Solicitar Inspección en Sitio
+                  </button>
+                </>
+              )}
+
+              {userRole === 'auditor' && (
+                <button
+                  onClick={() => onNavigate('auditor')}
+                  className="w-full md:w-auto px-6 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-xs hover:bg-primary-container transition shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <span className="material-symbols-outlined text-base">draw</span>
+                  Ir a Mesa de Auditoría &amp; Firmar Dictamen
+                </button>
+              )}
             </div>
           </div>
         </div>

@@ -441,15 +441,28 @@ contract SeedGrowEscrowVault is ERC721 {
               {/* Subtab 3: Source Code Solidity */}
               {contractSubTab === 'code' && (
                 <div className="space-y-2">
-                  <div className="flex justify-between items-center text-xs text-outline">
+                  <div className="flex justify-between items-center text-xs text-outline flex-wrap gap-2">
                     <span>Código fuente del contrato verificado en Base Sepolia</span>
-                    <button
-                      onClick={() => copyToClipboard(solidityCode, 'Código Solidity')}
-                      className="text-primary hover:underline font-bold text-xs flex items-center gap-1"
-                    >
-                      <span className="material-symbols-outlined text-sm">content_copy</span>
-                      Copiar Código
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <a
+                        href="/manual_blockchain_desde_cero_con_graficos.pdf"
+                        download="manual_blockchain_desde_cero_con_graficos.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-2.5 py-1 rounded-lg bg-surface-container-high hover:bg-surface-container text-primary font-bold text-xs flex items-center gap-1 border border-outline-variant/30 transition shadow-xs"
+                        title="Descargar Manual Técnico de Blockchain con Gráficos en PDF"
+                      >
+                        <span className="material-symbols-outlined text-sm">picture_as_pdf</span>
+                        Manual Blockchain (PDF)
+                      </a>
+                      <button
+                        onClick={() => copyToClipboard(solidityCode, 'Código Solidity')}
+                        className="text-primary hover:underline font-bold text-xs flex items-center gap-1 cursor-pointer"
+                      >
+                        <span className="material-symbols-outlined text-sm">content_copy</span>
+                        Copiar Código
+                      </button>
+                    </div>
                   </div>
                   <pre className="p-4 rounded-2xl bg-primary text-primary-fixed font-mono text-[11px] overflow-x-auto max-h-80 leading-relaxed border border-primary-fixed/20">
                     {solidityCode}
