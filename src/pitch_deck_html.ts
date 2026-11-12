@@ -1,0 +1,1035 @@
+export function getPitchDeckHtml(): string {
+  return `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Defensa Oral SAP UAI · Seed &amp; Grow · Agustín Faucetta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            uai: '#800000',
+            primary: '#012D1D',
+            forest: '#006C48',
+            emerald: '#10B981',
+            accent: '#D97706',
+            bgsoft: '#FBF9F5',
+            cardbg: '#FFFFFF'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @media print {
+      body { background: white !important; color: black !important; }
+      .no-print { display: none !important; }
+      .slide-container { display: block !important; page-break-after: always; min-height: 100vh; padding: 2rem !important; }
+    }
+    .slide { display: none; }
+    .slide.active { display: flex; }
+  </style>
+</head>
+<body class="bg-[#121815] text-[#1D1B19] font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-[#006C48] selection:text-white">
+
+  <!-- TOP BAR / HEADER -->
+  <header class="no-print bg-[#012D1D]/90 backdrop-blur border-b border-[#1B4332] text-white px-6 py-3 flex items-center justify-between z-20">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-[#990000] flex items-center justify-center font-extrabold text-xs tracking-wider text-white border border-white/20">
+        UAI
+      </div>
+      <div>
+        <h1 class="text-sm font-bold tracking-tight text-white flex items-center gap-2">
+          Seed &amp; Grow <span class="text-xs px-2 py-0.5 rounded-full bg-[#006C48] text-white font-semibold">Defensa SAP</span>
+        </h1>
+        <p class="text-[11px] text-white/70">Ingeniería en Sistemas Informáticos · Alumno: Agustín Faucetta</p>
+      </div>
+    </div>
+
+    <!-- CONTROLES -->
+    <div class="flex items-center gap-3">
+      <button onclick="toggleSpeakerNotes()" id="notesToggleBtn" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-semibold text-white flex items-center gap-1.5 transition-all">
+        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        <span>Guión del Orador</span>
+      </button>
+
+      <button onclick="window.print()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-semibold text-white flex items-center gap-1.5 transition-all">
+        <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        <span>Imprimir / PDF</span>
+      </button>
+
+      <a href="/api/download/uai-thesis" class="px-3 py-1.5 rounded-lg bg-[#006C48] hover:bg-[#10B981] text-xs font-bold text-white flex items-center gap-1.5 transition-all" title="Descargar Tesis Word (.docx)">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        <span>Tesis .docx</span>
+      </a>
+
+      <a href="/api/download/uai-excel" class="px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-xs font-bold text-white flex items-center gap-1.5 transition-all" title="Descargar Plan Económico y Financiero en Excel (.xlsx)">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        <span>Plan .xlsx</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN SLIDES VIEWPORT -->
+  <main class="flex-1 flex items-center justify-center p-4 md:p-8 max-w-7xl mx-auto w-full relative">
+    
+    <!-- SLIDE 1: PORTADA EJECUTIVA PROFESIONAL -->
+    <section class="slide active flex-col justify-between w-full min-h-[580px] bg-[#FBF9F5] rounded-2xl p-8 md:p-12 shadow-2xl border border-[#E2DDD7] relative overflow-hidden" data-slide="1">
+      <div class="flex items-center justify-between border-b border-[#ECE7E2] pb-5">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[#800000] flex items-center justify-center font-black text-sm text-white shadow-sm tracking-wider">
+            UAI
+          </div>
+          <div>
+            <span class="text-xs font-extrabold tracking-widest text-[#800000] uppercase">Universidad Abierta Interamericana</span>
+            <p class="text-xs font-bold text-[#555555]">Facultad de Tecnología Informática · Carrera de Ingeniería en Sistemas Informáticos</p>
+          </div>
+        </div>
+        <div class="text-right">
+          <span class="inline-block px-3 py-1 rounded-full bg-[#006C48]/10 text-[#006C48] font-extrabold text-xs tracking-wide">
+            Seminario de Aplicación Profesional (SAP 2026)
+          </span>
+        </div>
+      </div>
+
+      <div class="my-auto py-5">
+        <div class="flex items-center gap-2 flex-wrap mb-4">
+          <span class="px-3 py-1 rounded-full bg-[#012D1D] text-white text-[11px] font-bold tracking-wide uppercase flex items-center gap-1.5 shadow-xs">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Fintech · Web3 · Real World Assets (RWA)
+          </span>
+          <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-900 text-[11px] font-bold">
+            Red Base Layer 2
+          </span>
+          <span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-900 text-[11px] font-bold">
+            Fideicomiso Ordinario CCyCN 1666
+          </span>
+          <span class="px-2.5 py-1 rounded-full bg-blue-100 text-blue-900 text-[11px] font-bold">
+            Auditoría Pericial Colegiada
+          </span>
+        </div>
+
+        <h1 class="text-4xl md:text-6xl font-black text-[#012D1D] tracking-tight leading-tight">
+          SEED &amp; GROW
+        </h1>
+        <h2 class="text-lg md:text-2xl font-extrabold text-[#006C48] mt-2 tracking-tight">
+          Infraestructura Fiduciaria y Custodia Escrow Inteligente para la Economía Real
+        </h2>
+        <p class="text-sm md:text-base text-[#414844] max-w-3xl mt-3 leading-relaxed font-medium">
+          Plataforma descentralizada de financiamiento colectivo por hitos: conectando aportantes con proyectos productivos, creativos y tecnológicos mediante contratos inteligentes autoejecutables, quórum comunitario y dictámenes periciales colegiados.
+        </p>
+
+        <!-- KPI Pill Container -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6">
+          <div class="p-3 bg-white rounded-xl border border-[#E2DDD7] text-center shadow-xs">
+            <span class="text-[10px] uppercase font-bold text-[#777777] tracking-wider block">Desembolso</span>
+            <p class="text-sm font-extrabold text-[#012D1D] mt-0.5">100% Condicionado a Hito</p>
+          </div>
+          <div class="p-3 bg-white rounded-xl border border-[#E2DDD7] text-center shadow-xs">
+            <span class="text-[10px] uppercase font-bold text-[#777777] tracking-wider block">Seguridad Legal</span>
+            <p class="text-sm font-extrabold text-[#012D1D] mt-0.5">Patrimonio Inembargable</p>
+          </div>
+          <div class="p-3 bg-white rounded-xl border border-[#E2DDD7] text-center shadow-xs">
+            <span class="text-[10px] uppercase font-bold text-[#777777] tracking-wider block">Velocidad / Costo</span>
+            <p class="text-sm font-extrabold text-[#012D1D] mt-0.5">2s Finalidad · Gas &lt; $0,01</p>
+          </div>
+          <div class="p-3 bg-white rounded-xl border border-[#E2DDD7] text-center shadow-xs">
+            <span class="text-[10px] uppercase font-bold text-[#777777] tracking-wider block">Rampa de Acceso</span>
+            <p class="text-sm font-extrabold text-[#012D1D] mt-0.5">CBU/CVU (ARS) + USDC</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-[#ECE7E2] pt-5 text-xs text-[#555555]">
+        <div>
+          <p><strong class="text-[#012D1D]">Alumno:</strong> Agustín Faucetta (Ingeniería en Sistemas Informáticos)</p>
+          <p><strong class="text-[#012D1D]">Sede:</strong> Centro / Rosario — Convocatoria 2026</p>
+        </div>
+        <div class="md:text-right">
+          <p><strong class="text-[#012D1D]">Cátedra Evaluadora:</strong> Prof. Banega, Matías Pablo · Prof. Sartorio, Alejandro Roberto</p>
+          <p><strong class="text-[#012D1D]">Duración de la Exposición:</strong> 15 a 20 minutos</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 2: EL PROBLEMA -->
+    <section class="slide flex-col justify-between w-full min-h-[580px] bg-[#FBF9F5] rounded-2xl p-8 md:p-12 shadow-2xl border border-[#E2DDD7]" data-slide="2">
+      <div class="flex items-center justify-between border-b border-[#ECE7E2] pb-4">
+        <span class="text-xs font-extrabold tracking-widest text-[#006C48] uppercase">01 / Diagnóstico y Contexto</span>
+        <span class="text-xs font-bold text-[#888888]">Diapositiva 2 de 12</span>
+      </div>
+
+      <div class="my-auto py-3">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-[#012D1D]">El Abismo de Financiamiento en la Economía Real</h2>
+        <p class="text-sm text-[#555555] mt-1">¿Por qué los proyectos productivos, culturales y tecnológicos no logran financiarse de forma segura?</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-6">
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <div class="w-8 h-8 rounded-lg bg-red-100 text-red-700 flex items-center justify-center font-black text-sm mb-3">1</div>
+            <h4 class="font-bold text-sm text-[#012D1D] mb-1">Exclusión Bancaria Severa</h4>
+            <p class="text-xs leading-relaxed text-[#555555]">
+              Tasas bancarias activas del 80%-110% anual. La banca tradicional excluye a emprendimientos productivos, plantas fabriles, obras y startups por falta de garantías hipotecarias tradicionales.
+            </p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-black text-sm mb-3">2</div>
+            <h4 class="font-bold text-sm text-[#012D1D] mb-1">Riesgo Moral y Cheque en Blanco</h4>
+            <p class="text-xs leading-relaxed text-[#555555]">
+              En el crowdfunding tradicional el dinero se entrega 100% por adelantado sin rendición obligatoria. Si el creador no ejecuta la obra, el inversor pierde su capital sin recurso legal ni técnico inmediato.
+            </p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center font-black text-sm mb-3">3</div>
+            <h4 class="font-bold text-sm text-[#012D1D] mb-1">Ahorro Digital Inmovilizado</h4>
+            <p class="text-xs leading-relaxed text-[#555555]">
+              Más de 5 millones de argentinos poseen criptoactivos estables (USDT/USDC). Buscan rendimientos en proyectos reales pero desconfían de la pura especulación financiera o de esquemas sin respaldo tangible.
+            </p>
+          </div>
+        </div>
+
+        <!-- VALIDACIÓN DE MERCADO PRODUCTIVO -->
+        <div class="mt-4 p-3.5 bg-emerald-50 rounded-xl border border-emerald-200 flex items-start gap-3">
+          <span class="text-xl">🏭</span>
+          <div class="text-xs text-[#555555] leading-relaxed">
+            <strong class="text-[#012D1D]">Demanda Insatisfecha en la Economía Real Argentina:</strong>
+            Las PyMEs industriales, biotecnológicas, energéticas y de software generan más del 70% del empleo formal pero reciben menos del 12% del crédito disponible. <strong>Seed &amp; Grow</strong> canaliza el ahorro colectivo hacia proyectos productivos estructurando Fideicomisos Inembargables (CCyCN 1666) y Smart Contracts Escrow (Base L2) con inspección pericial colegiada, erradicando el riesgo moral sin intermediación usuraria.
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-[#012D1D] text-white p-3 rounded-xl text-xs flex items-center justify-between mt-2">
+        <span>💡 <strong>Conclusión del diagnóstico:</strong> Existe liquidez y apetito inversor demostrado, pero falta una <em>infraestructura de confianza computable</em>.</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: LA SOLUCIÓN -->
+    <section class="slide flex-col justify-between w-full min-h-[580px] bg-[#FBF9F5] rounded-2xl p-8 md:p-12 shadow-2xl border border-[#E2DDD7]" data-slide="3">
+      <div class="flex items-center justify-between border-b border-[#ECE7E2] pb-4">
+        <span class="text-xs font-extrabold tracking-widest text-[#006C48] uppercase">02 / Propuesta de Valor</span>
+        <span class="text-xs font-bold text-[#888888]">Diapositiva 3 de 12</span>
+      </div>
+
+      <div class="my-auto py-4">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-[#012D1D]">La Solución: Seed &amp; Grow</h2>
+        <p class="text-sm text-[#555555] mt-1">El Doble Candado Fiduciario y Criptográfico</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+          <div class="bg-white p-6 rounded-xl border-l-4 border-l-[#006C48] border border-[#E2DDD7] shadow-sm">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#006C48]">Capa Legal Argentina</span>
+            <h3 class="text-lg font-bold text-[#012D1D] mt-1 mb-3">Fideicomiso Ordinario (CCyCN Art. 1666)</h3>
+            <ul class="space-y-2 text-xs text-[#555555]">
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-600 font-bold">✓</span>
+                <span><strong>Patrimonio de afectación separado:</strong> Inembargable ante quiebras o deudas personales del productor o de Seed &amp; Grow.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-600 font-bold">✓</span>
+                <span><strong>Marco CNV y UIF:</strong> Regulado bajo la Ley 27.349 de Financiamiento Colectivo y registro PSAV (Ley 27.739).</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-600 font-bold">✓</span>
+                <span><strong>Certificado Fiscal ARCA:</strong> Deducciones impositivas y transparencia contable instantánea.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl border-l-4 border-l-[#012D1D] border border-[#E2DDD7] shadow-sm">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#012D1D]">Capa Tecnológica Distribuida</span>
+            <h3 class="text-lg font-bold text-[#012D1D] mt-1 mb-3">Smart Contracts Escrow en Base L2</h3>
+            <ul class="space-y-2 text-xs text-[#555555]">
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-600 font-bold">✓</span>
+                <span><strong>Custodia Segregada:</strong> Los fondos se bloquean en bóvedas autoejecutables y no en una cuenta bancaria opaca.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-600 font-bold">✓</span>
+                <span><strong>Desembolso por Hitos:</strong> Cada tramo de capital solo se libera con dictamen pericial aprobado.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-600 font-bold">✓</span>
+                <span><strong>Costo y Velocidad:</strong> Finalidad de bloque en 2 segundos y costo de transacción &lt; USD 0,01.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-[#ECE7E2] pt-4 flex items-center justify-between text-xs text-[#555555]">
+        <span><strong>Resultado:</strong> Eliminación matemática y jurídica del riesgo de malversación de fondos.</span>
+        <span class="font-bold text-[#006C48]">Zero-Default Escrow Model</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: EL PERITAJE COLEGIADO -->
+    <section class="slide flex-col justify-between w-full min-h-[580px] bg-[#FBF9F5] rounded-2xl p-8 md:p-12 shadow-2xl border border-[#E2DDD7]" data-slide="4">
+      <div class="flex items-center justify-between border-b border-[#ECE7E2] pb-4">
+        <span class="text-xs font-extrabold tracking-widest text-[#006C48] uppercase">03 / Innovación de Confianza</span>
+        <span class="text-xs font-bold text-[#888888]">Diapositiva 4 de 12</span>
+      </div>
+
+      <div class="my-auto py-4">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-[#012D1D]">El Eslabón Crítico: Auditoría Pericial Colegiada</h2>
+        <p class="text-sm text-[#555555] mt-1">Cómo se resuelve el "Problema del Oráculo" conectando el mundo real con la blockchain</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8">
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] text-center shadow-sm">
+            <div class="w-8 h-8 rounded-full bg-[#012D1D] text-white flex items-center justify-center font-bold text-xs mx-auto mb-3">1</div>
+            <h4 class="font-bold text-sm text-[#012D1D]">Rendición de Hito</h4>
+            <p class="text-[11px] text-[#555555] mt-2">El productor carga facturas electrónicas de compras y fotografías georreferenciadas a IPFS.</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] text-center shadow-sm">
+            <div class="w-8 h-8 rounded-full bg-[#006C48] text-white flex items-center justify-center font-bold text-xs mx-auto mb-3">2</div>
+            <h4 class="font-bold text-sm text-[#012D1D]">Inspección Ocular / Técnica</h4>
+            <p class="text-[11px] text-[#555555] mt-2">Un Perito Colegiado según la especialidad (Ingeniero Industrial, Civil, en Sistemas, Agrónomo o Contador) valida el avance técnico fáctico.</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] text-center shadow-sm">
+            <div class="w-8 h-8 rounded-full bg-[#1B4332] text-white flex items-center justify-center font-bold text-xs mx-auto mb-3">3</div>
+            <h4 class="font-bold text-sm text-[#012D1D]">Firma Criptográfica</h4>
+            <p class="text-[11px] text-[#555555] mt-2">El perito emite dictamen técnico con firma digital ECDSA SHA-256 anclada en Base L2.</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border-2 border-emerald-500 text-center shadow-sm bg-emerald-50/50">
+            <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs mx-auto mb-3">4</div>
+            <h4 class="font-bold text-sm text-[#012D1D]">Desembolso Escrow</h4>
+            <p class="text-[11px] text-[#555555] mt-2">El contrato inteligente valida la signatura y transfiere el tramo exacto en 2 segundos.</p>
+          </div>
+        </div>
+
+        <div class="mt-8 bg-white p-4 rounded-xl border border-[#E2DDD7] flex items-center gap-4">
+          <span class="text-2xl">⚖️</span>
+          <p class="text-xs text-[#555555] leading-relaxed">
+            <strong>Responsabilidad Profesional y Legal por Colegio Profesional:</strong> El auditor responde civil y penalmente con su matrícula profesional según su incumbencia técnica legal (Colegios de Ingenieros Industriales, Civiles y de Sistemas, Consejos Profesionales de Ciencias Económicas, y Colegios de Agrónomos/Ambientales). La tecnología no reemplaza la pericia humana; la potencia con inmutabilidad algorítmica.
+          </p>
+        </div>
+      </div>
+
+      <div class="border-t border-[#ECE7E2] pt-4 text-right text-xs text-[#555555]">
+        <span>Multi-Sig Threshold: <strong>3 de 5 firmas requeridas</strong></span>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: RAMPA DUAL FIAT-CRYPTO -->
+    <section class="slide flex-col justify-between w-full min-h-[580px] bg-[#FBF9F5] rounded-2xl p-8 md:p-12 shadow-2xl border border-[#E2DDD7]" data-slide="5">
+      <div class="flex items-center justify-between border-b border-[#ECE7E2] pb-4">
+        <span class="text-xs font-extrabold tracking-widest text-[#006C48] uppercase">04 / Experiencia de Usuario</span>
+        <span class="text-xs font-bold text-[#888888]">Diapositiva 5 de 12</span>
+      </div>
+
+      <div class="my-auto py-4">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-[#012D1D]">Rampa Dual: Invertir en Pesos o en Dólares</h2>
+        <p class="text-sm text-[#555555] mt-1">Abstrayendo la complejidad de la Web3 para el inversor y productor tradicional argentino</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+          <div class="bg-white p-6 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="px-3 py-1 rounded bg-blue-100 text-blue-800 font-mono font-bold text-xs">CBU / CVU</span>
+              <h4 class="font-bold text-base text-[#012D1D]">Flujo Bancario Tradicional</h4>
+            </div>
+            <p class="text-xs text-[#555555] leading-relaxed mb-4">
+              El inversor transfiere pesos argentinos desde Mercado Pago, Santander o Galicia. Una entidad fiduciaria aliada (BIND) concilia el depósito fiduciario y asigna la cuota-parte digital sin que el usuario deba comprar gas ni gestionar claves privadas.
+            </p>
+            <div class="p-3 bg-[#FBF9F5] rounded-lg text-[11px] font-mono text-[#555555]">
+              Inversor (ARS) ➔ Transferencia CBU ➔ Conciliación API ➔ Certificado de Cuota-Parte
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="px-3 py-1 rounded bg-emerald-100 text-emerald-800 font-mono font-bold text-xs">USDC / USDT</span>
+              <h4 class="font-bold text-base text-[#012D1D]">Flujo Web3 Nativo en Base L2</h4>
+            </div>
+            <p class="text-xs text-[#555555] leading-relaxed mb-4">
+              El inversor conecta su billetera (MetaMask, Coinbase Wallet). Suscribe directamente el Smart Contract Escrow depositando stablecoins. Recibe un token ERC-721 representativo con liquidación instantánea y gas menor a 1 centavo de dólar.
+            </p>
+            <div class="p-3 bg-[#FBF9F5] rounded-lg text-[11px] font-mono text-[#555555]">
+              Wallet Web3 ➔ Deposit USDC ➔ Mint Cuota-Parte NFT ➔ Custodia Escrow On-Chain
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl border border-[#ECE7E2] text-xs text-[#555555] flex items-center justify-between">
+        <span>🔒 Validación de Identidad: <strong>Validación biométrica y RENAPER mediante API KYC</strong></span>
+        <span class="text-emerald-700 font-bold">100% Compliance UIF / PSAV</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: MODELO DE NEGOCIO -->
+    <section class="slide flex-col justify-between w-full min-h-[580px] bg-[#FBF9F5] rounded-2xl p-8 md:p-12 shadow-2xl border border-[#E2DDD7]" data-slide="6">
+      <div class="flex items-center justify-between border-b border-[#ECE7E2] pb-4">
+        <span class="text-xs font-extrabold tracking-widest text-[#006C48] uppercase">05 / Modelo de Negocio</span>
+        <span class="text-xs font-bold text-[#888888]">Diapositiva 6 de 12</span>
+      </div>
+
+      <div class="my-auto py-4">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-[#012D1D]">Monetización y Fuentes de Ingresos</h2>
+        <p class="text-sm text-[#555555] mt-1">Alineación total de incentivos: solo cobramos si el proyecto avanza con éxito</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          <div class="bg-white p-6 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <span class="text-2xl font-black text-[#006C48]">3.5% a 5%</span>
+            <h4 class="font-bold text-sm text-[#012D1D] mt-2 mb-2">Success Fee Escrow</h4>
+            <p class="text-xs text-[#555555] leading-relaxed">
+              Comisión de éxito retenida automáticamente por el contrato inteligente en Base L2 al momento de liberar cada hito técnico auditado. Si no hay hito aprobado, no hay comisión.
+            </p>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <span class="text-2xl font-black text-[#012D1D]">USD 500 - 1.200</span>
+            <h4 class="font-bold text-sm text-[#012D1D] mt-2 mb-2">Estructuración Fiduciaria</h4>
+            <p class="text-xs text-[#555555] leading-relaxed">
+              Tasa fija inicial por proyecto que cubre los gastos de constitución de contrato fiduciario, análisis de admisibilidad y alta de bóveda criptográfica.
+            </p>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <span class="text-2xl font-black text-amber-600">0.75% P2P</span>
+            <h4 class="font-bold text-sm text-[#012D1D] mt-2 mb-2">Mercado Secundario (Fase 4)</h4>
+            <p class="text-xs text-[#555555] leading-relaxed">
+              Comisión transaccional cuando inversores compran o venden sus cuotas-parte y derechos de rendimiento antes de la liquidación final del proyecto.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-[#ECE7E2] pt-4 flex items-center justify-between text-xs text-[#555555]">
+        <span>Sin comisiones ocultas · Sin costos mensuales de mantenimiento de cuenta para inversores</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: EVALUACIÓN ECONÓMICA -->
+    <section class="slide flex-col justify-between w-full min-h-[580px] bg-[#FBF9F5] rounded-2xl p-8 md:p-12 shadow-2xl border border-[#E2DDD7]" data-slide="7">
+      <div class="flex items-center justify-between border-b border-[#ECE7E2] pb-4">
+        <span class="text-xs font-extrabold tracking-widest text-[#006C48] uppercase">06 / Evaluación Económica y Financiera</span>
+        <span class="text-xs font-bold text-[#888888]">Diapositiva 7 de 12</span>
+      </div>
+
+      <div class="my-auto py-4">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-[#012D1D]">Indicadores de Rentabilidad y Proyecciones</h2>
+        <p class="text-sm text-[#555555] mt-1">Evaluación de inversión a 3 años descontada al costo de capital del 15% anual</p>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] text-center shadow-sm">
+            <span class="text-xs font-bold text-[#555555] uppercase">Inversión Inicial</span>
+            <h3 class="text-2xl font-extrabold text-[#012D1D] mt-1">USD 35.000</h3>
+            <p class="text-[11px] text-[#888888] mt-1">CAPEX &amp; Puesta en Marcha</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-emerald-500 text-center shadow-sm bg-emerald-50/30">
+            <span class="text-xs font-bold text-emerald-800 uppercase">Valor Actual Neto (VAN)</span>
+            <h3 class="text-2xl font-extrabold text-emerald-700 mt-1">USD 184.250</h3>
+            <p class="text-[11px] text-emerald-600 mt-1">Tasa de descuento: 15%</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-emerald-500 text-center shadow-sm bg-emerald-50/30">
+            <span class="text-xs font-bold text-emerald-800 uppercase">Tasa Interna de Retorno</span>
+            <h3 class="text-2xl font-extrabold text-emerald-700 mt-1">48.7%</h3>
+            <p class="text-[11px] text-emerald-600 mt-1">TIR &gt; WACC</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] text-center shadow-sm">
+            <span class="text-xs font-bold text-[#555555] uppercase">Payback Period</span>
+            <h3 class="text-2xl font-extrabold text-[#012D1D] mt-1">14 Meses</h3>
+            <p class="text-[11px] text-[#888888] mt-1">Punto equilibrio: Mes 9</p>
+          </div>
+        </div>
+
+        <div class="mt-6 bg-white p-4 rounded-xl border border-[#E2DDD7]">
+          <h4 class="text-xs font-bold text-[#012D1D] mb-2 uppercase tracking-wide">Evolución de Volumen Financiado y Utilidad Neta (USD)</h4>
+          <div class="grid grid-cols-3 gap-4 text-center text-xs">
+            <div class="p-3 bg-[#FBF9F5] rounded-lg">
+              <span class="font-bold text-[#555555]">Año 1</span>
+              <p class="text-sm font-extrabold text-[#012D1D]">GMV: $450.000</p>
+              <p class="text-[11px] text-emerald-600">Break-even superado</p>
+            </div>
+            <div class="p-3 bg-[#FBF9F5] rounded-lg">
+              <span class="font-bold text-[#555555]">Año 2</span>
+              <p class="text-sm font-extrabold text-[#012D1D]">GMV: $1.800.000</p>
+              <p class="text-[11px] text-emerald-600">Utilidad: $38.640</p>
+            </div>
+            <div class="p-3 bg-[#FBF9F5] rounded-lg">
+              <span class="font-bold text-[#555555]">Año 3</span>
+              <p class="text-sm font-extrabold text-[#012D1D]">GMV: $4.500.000</p>
+              <p class="text-[11px] text-emerald-600">Utilidad: $117.600</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded-xl p-3">
+          <div class="flex items-center gap-2">
+            <span class="text-lg">📊</span>
+            <span class="text-xs font-bold text-emerald-950">Planilla de Cálculo Financiera Oficial del Capítulo 8 (UAI):</span>
+          </div>
+          <a href="/api/download/uai-excel" download="Faucetta_Agustin_SAP_Plan_Financiero_SeedAndGrow.xlsx" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#006C48] hover:bg-[#012D1D] text-white text-xs font-bold transition-all shadow-xs">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            <span>Descargar Modelo Financiero (.xlsx)</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="border-t border-[#ECE7E2] pt-4 text-xs text-[#555555] flex justify-between">
+        <span>Modelo altamente escalable con costo marginal de transacción casi nulo</span>
+        <span class="font-bold text-[#006C48]">Proyecto Altamente Rentable</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: ARQUITECTURA DE SOFTWARE -->
+    <section class="slide flex-col justify-between w-full min-h-[580px] bg-[#FBF9F5] rounded-2xl p-8 md:p-12 shadow-2xl border border-[#E2DDD7]" data-slide="8">
+      <div class="flex items-center justify-between border-b border-[#ECE7E2] pb-4">
+        <span class="text-xs font-extrabold tracking-widest text-[#006C48] uppercase">07 / Ingeniería de Software</span>
+        <span class="text-xs font-bold text-[#888888]">Diapositiva 8 de 12</span>
+      </div>
+
+      <div class="my-auto py-4">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-[#012D1D]">Arquitectura de Software Multicapa</h2>
+        <p class="text-sm text-[#555555] mt-1">Desacoplamiento estricto, alta concurrencia y seguridad criptográfica de extremo a extremo</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <span class="text-xs font-bold text-[#006C48] uppercase font-mono">Capa 1: Presentación</span>
+            <h4 class="font-bold text-sm text-[#012D1D] mt-1 mb-2">React 19 SPA + Vite</h4>
+            <p class="text-xs text-[#555555] leading-relaxed">
+              Componentes modulares funcionales, Tailwind CSS, TypeScript estricto, hooks reactivos para conexión Web3 con Wagmi/Viem.
+            </p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <span class="text-xs font-bold text-[#012D1D] uppercase font-mono">Capa 2: Aplicación</span>
+            <h4 class="font-bold text-sm text-[#012D1D] mt-1 mb-2">Node.js / Express</h4>
+            <p class="text-xs text-[#555555] leading-relaxed">
+              API RESTful en Cloud Run, middleware de autenticación por roles, orquestación de firmas y motor de reportes fiscales PDF.
+            </p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <span class="text-xs font-bold text-amber-700 uppercase font-mono">Capa 3: Datos</span>
+            <h4 class="font-bold text-sm text-[#012D1D] mt-1 mb-2">PostgreSQL + Firestore</h4>
+            <p class="text-xs text-[#555555] leading-relaxed">
+              Base de datos relacional Cloud SQL con Drizzle ORM (3FN) para transacciones financieras; Firestore para auditorías en tiempo real.
+            </p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border-2 border-[#006C48] shadow-sm bg-[#006C48]/5">
+            <span class="text-xs font-bold text-emerald-800 uppercase font-mono">Capa 4: Blockchain</span>
+            <h4 class="font-bold text-sm text-[#012D1D] mt-1 mb-2">Base L2 (EVM)</h4>
+            <p class="text-xs text-[#555555] leading-relaxed">
+              Smart contracts en Solidity 0.8.24 (OpenZeppelin v5): Bóvedas Escrow multi-sig 3/5, Tokens ERC-721 y Gobernanza descentralizada.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-6 p-4 bg-white rounded-xl border border-[#E2DDD7] flex items-center justify-between text-xs text-[#555555]">
+          <span>⚡ <strong>Métricas No Funcionales (ISO 25010):</strong> Latencia P95 &lt; 350 ms · Uptime 99.9% · Bloque 2 seg · Gas &lt; $0,01</span>
+          <span class="font-mono text-emerald-700 font-bold">Base Sepolia / Mainnet Verified</span>
+        </div>
+      </div>
+
+      <div class="border-t border-[#ECE7E2] pt-4 text-xs text-[#555555] flex justify-between">
+        <span>Seguridad: Cifrado en reposo AES-256-GCM y firmas digitales ECDSA</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: MODELADO UML -->
+    <section class="slide flex-col justify-between w-full min-h-[580px] bg-[#FBF9F5] rounded-2xl p-8 md:p-12 shadow-2xl border border-[#E2DDD7]" data-slide="9">
+      <div class="flex items-center justify-between border-b border-[#ECE7E2] pb-4">
+        <span class="text-xs font-extrabold tracking-widest text-[#006C48] uppercase">08 / Modelado de Software</span>
+        <span class="text-xs font-bold text-[#888888]">Diapositiva 9 de 12</span>
+      </div>
+
+      <div class="my-auto py-4">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-[#012D1D]">Modelado Formal UML del Sistema</h2>
+        <p class="text-sm text-[#555555] mt-1">Los 5 diagramas estandarizados desarrollados para la memoria técnica de la UAI</p>
+
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mt-6">
+          <button onclick="openUmlModal('01_casos_de_uso.svg', 'Diagrama General de Casos de Uso')" class="bg-white p-4 rounded-xl border border-[#E2DDD7] hover:border-[#006C48] text-left transition-all hover:shadow-md group cursor-pointer">
+            <span class="text-[10px] font-bold text-[#006C48] uppercase">Diagrama 1</span>
+            <h4 class="font-bold text-xs text-[#012D1D] mt-1 group-hover:text-[#006C48]">Casos de Uso</h4>
+            <p class="text-[10px] text-[#777777] mt-1">Actores, límites, include/extend</p>
+            <span class="inline-block mt-3 text-[10px] font-semibold text-emerald-700">Ver diagrama ↗</span>
+          </button>
+
+          <button onclick="openUmlModal('02_diagrama_clases.svg', 'Diagrama de Clases del Dominio')" class="bg-white p-4 rounded-xl border border-[#E2DDD7] hover:border-[#006C48] text-left transition-all hover:shadow-md group cursor-pointer">
+            <span class="text-[10px] font-bold text-[#006C48] uppercase">Diagrama 2</span>
+            <h4 class="font-bold text-xs text-[#012D1D] mt-1 group-hover:text-[#006C48]">Clases del Dominio</h4>
+            <p class="text-[10px] text-[#777777] mt-1">Entidades, contratos, herencias</p>
+            <span class="inline-block mt-3 text-[10px] font-semibold text-emerald-700">Ver diagrama ↗</span>
+          </button>
+
+          <button onclick="openUmlModal('03_diagrama_secuencia.svg', 'Diagrama de Secuencia: Desembolso Escrow')" class="bg-white p-4 rounded-xl border border-[#E2DDD7] hover:border-[#006C48] text-left transition-all hover:shadow-md group cursor-pointer">
+            <span class="text-[10px] font-bold text-[#006C48] uppercase">Diagrama 3</span>
+            <h4 class="font-bold text-xs text-[#012D1D] mt-1 group-hover:text-[#006C48]">Secuencia Escrow</h4>
+            <p class="text-[10px] text-[#777777] mt-1">Rendición, peritaje y release</p>
+            <span class="inline-block mt-3 text-[10px] font-semibold text-emerald-700">Ver diagrama ↗</span>
+          </button>
+
+          <button onclick="openUmlModal('04_diagrama_der.svg', 'Diagrama Entidad-Relación (DER)')" class="bg-white p-4 rounded-xl border border-[#E2DDD7] hover:border-[#006C48] text-left transition-all hover:shadow-md group cursor-pointer">
+            <span class="text-[10px] font-bold text-[#006C48] uppercase">Diagrama 4</span>
+            <h4 class="font-bold text-xs text-[#012D1D] mt-1 group-hover:text-[#006C48]">DER de BD</h4>
+            <p class="text-[10px] text-[#777777] mt-1">PostgreSQL normalizado 3FN</p>
+            <span class="inline-block mt-3 text-[10px] font-semibold text-emerald-700">Ver diagrama ↗</span>
+          </button>
+
+          <button onclick="openUmlModal('05_diagrama_despliegue.svg', 'Diagrama de Despliegue Físico')" class="bg-white p-4 rounded-xl border border-[#E2DDD7] hover:border-[#006C48] text-left transition-all hover:shadow-md group cursor-pointer">
+            <span class="text-[10px] font-bold text-[#006C48] uppercase">Diagrama 5</span>
+            <h4 class="font-bold text-xs text-[#012D1D] mt-1 group-hover:text-[#006C48]">Despliegue Físico</h4>
+            <p class="text-[10px] text-[#777777] mt-1">Cloud Run, Nodos L2 e IPFS</p>
+            <span class="inline-block mt-3 text-[10px] font-semibold text-emerald-700">Ver diagrama ↗</span>
+          </button>
+        </div>
+
+        <div class="mt-6 bg-[#012D1D] text-white p-4 rounded-xl text-xs flex items-center justify-between">
+          <span>📐 Modelado con rigor estándar OMG / UML 2.5 integrado al Capítulo 10 de la memoria técnica.</span>
+          <span class="text-emerald-400 font-mono text-[11px]">Vector SVGs Listos</span>
+        </div>
+      </div>
+
+      <div class="border-t border-[#ECE7E2] pt-4 text-xs text-[#555555] flex justify-between">
+        <span>Hacé clic en cualquiera de los botones de arriba para ampliar el diagrama en alta resolución</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: MARCO LEGAL Y FISCAL ARGENTINO -->
+    <section class="slide flex-col justify-between w-full min-h-[580px] bg-[#FBF9F5] rounded-2xl p-8 md:p-12 shadow-2xl border border-[#E2DDD7]" data-slide="10">
+      <div class="flex items-center justify-between border-b border-[#ECE7E2] pb-4">
+        <span class="text-xs font-extrabold tracking-widest text-[#006C48] uppercase">09 / Factibilidad Legal</span>
+        <span class="text-xs font-bold text-[#888888]">Diapositiva 10 de 12</span>
+      </div>
+
+      <div class="my-auto py-4">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-[#012D1D]">Encuadre Legal y Regulatorio en Argentina</h2>
+        <p class="text-sm text-[#555555] mt-1">Blindaje jurídico frente a los organismos de contralor nacional</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <h4 class="font-bold text-sm text-[#012D1D] flex items-center gap-2 mb-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+              Código Civil y Comercial (Arts. 1666 a 1700)
+            </h4>
+            <p class="text-xs text-[#555555] leading-relaxed">
+              El <strong>Fideicomiso Ordinario</strong> crea un patrimonio autónomo. Los bienes fideicomitidos no responden por deudas del Fiduciante ni del Fiduciario. La justicia argentina reconoce la validez probatoria de firmas electrónicas bajo los Arts. 286 y 288.
+            </p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <h4 class="font-bold text-sm text-[#012D1D] flex items-center gap-2 mb-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+              Comisión Nacional de Valores (Ley 27.349)
+            </h4>
+            <p class="text-xs text-[#555555] leading-relaxed">
+              La plataforma se estructura bajo el régimen de <strong>Financiamiento Colectivo</strong>, respetando los topes por proyecto, el derecho de arrepentimiento del inversor y la publicidad veraz de riesgos.
+            </p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <h4 class="font-bold text-sm text-[#012D1D] flex items-center gap-2 mb-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span>
+              UIF / Registro PSAV (Ley 27.739)
+            </h4>
+            <p class="text-xs text-[#555555] leading-relaxed">
+              Cumplimiento estricto con la normativa de prevención de lavado de activos (PLAFT). Monitoreo de matrices de riesgo, legajo de origen de fondos y reporte sistemático ante la UIF.
+            </p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <h4 class="font-bold text-sm text-[#012D1D] flex items-center gap-2 mb-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span>
+              ARCA (ex-AFIP) y Régimen Fiscal
+            </h4>
+            <p class="text-xs text-[#555555] leading-relaxed">
+              Emisión automatizada del <strong>Certificado Fiscal Oficial</strong>. Liquidación de retenciones de Ganancias e IVA para que el inversor declare sus cuotas-parte sin fricción contable.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-[#ECE7E2] pt-4 text-xs text-[#555555] flex justify-between">
+        <span>El software no opera en una laguna legal: encuadra punto por punto en el derecho positivo argentino.</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: DEMOSTRACIÓN EN VIVO (CASO PILOTO) -->
+    <section class="slide flex-col justify-between w-full min-h-[580px] bg-[#FBF9F5] rounded-2xl p-8 md:p-12 shadow-2xl border border-[#E2DDD7]" data-slide="11">
+      <div class="flex items-center justify-between border-b border-[#ECE7E2] pb-4">
+        <span class="text-xs font-extrabold tracking-widest text-[#006C48] uppercase">10 / Caso Piloto en Producción</span>
+        <span class="text-xs font-bold text-[#888888]">Diapositiva 11 de 12</span>
+      </div>
+
+      <div class="my-auto py-4">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-[#012D1D]">Caso Piloto: Biofábrica Serrana</h2>
+        <p class="text-sm text-[#555555] mt-1">Financiamiento de producción biotecnológica de bioinsumos en Traslasierra, Córdoba</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <span class="text-xs font-bold text-[#006C48] uppercase">Hito 1 · Ejecutado</span>
+            <h4 class="font-bold text-sm text-[#012D1D] mt-1">Cámara de Biorreactores</h4>
+            <p class="text-xs text-[#555555] mt-2 leading-relaxed">
+              Desembolso de USD 15.000 liberado tras inspección ocular del Ing. Agr. Lucas Morales (Mat. CIAPC 4821). Fotografías e informe pericial anclados en Base L2.
+            </p>
+            <span class="inline-block mt-3 px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px]">Auditado y Desembolsado</span>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border-2 border-emerald-500 shadow-sm bg-emerald-50/20">
+            <span class="text-xs font-bold text-emerald-800 uppercase">Hito 2 · En Progreso</span>
+            <h4 class="font-bold text-sm text-[#012D1D] mt-1">Sensores IoT &amp; Telemetría</h4>
+            <p class="text-xs text-[#555555] mt-2 leading-relaxed">
+              Instalación de sensores de humedad de suelo, pH y temperatura. Telemetría sincronizada en vivo con la plataforma cada 15 minutos.
+            </p>
+            <span class="inline-block mt-3 px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold text-[10px]">Telemetría en Vivo Activa</span>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <span class="text-xs font-bold text-amber-700 uppercase">Hito 3 · Próximo</span>
+            <h4 class="font-bold text-sm text-[#012D1D] mt-1">Lote Piloto Biofertilizante</h4>
+            <p class="text-xs text-[#555555] mt-2 leading-relaxed">
+              Producción de 10.000 litros de biofertilizante líquido regenerativo y distribución de dividendos proyectada para cuotapartistas.
+            </p>
+            <span class="inline-block mt-3 px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold text-[10px]">Fondos en Escrow ($10.000)</span>
+          </div>
+        </div>
+
+        <div class="mt-6 text-center">
+          <a href="/" target="_blank" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#012D1D] hover:bg-[#006C48] text-white text-xs font-bold transition-all shadow-md">
+            <span>Abrir Prototipo en Vivo en Nueva Pestaña</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="border-t border-[#ECE7E2] pt-4 text-xs text-[#555555] flex justify-between">
+        <span>Sistema totalmente operativo y testeable en la sesión de examen.</span>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: CONCLUSIONES Y CIERRE -->
+    <section class="slide flex-col justify-between w-full min-h-[580px] bg-[#FBF9F5] rounded-2xl p-8 md:p-12 shadow-2xl border border-[#E2DDD7]" data-slide="12">
+      <div class="flex items-center justify-between border-b border-[#ECE7E2] pb-4">
+        <span class="text-xs font-extrabold tracking-widest text-[#006C48] uppercase">11 / Conclusiones del Trabajo de Grado</span>
+        <span class="text-xs font-bold text-[#888888]">Diapositiva 12 de 12</span>
+      </div>
+
+      <div class="my-auto py-4">
+        <h2 class="text-2xl md:text-4xl font-extrabold text-[#012D1D]">Conclusiones del Seminario de Aplicación Profesional</h2>
+        <p class="text-sm text-[#555555] mt-1">Aportes a la Ingeniería de Sistemas Informáticos y a la Economía Real</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          <div class="bg-white p-6 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <span class="text-2xl">🌱</span>
+            <h4 class="font-bold text-sm text-[#012D1D] mt-2 mb-2">Ingeniería con Impacto Real</h4>
+            <p class="text-xs text-[#555555] leading-relaxed">
+              La tecnología blockchain no es un fin en sí misma ni mera especulación financiera: es una herramienta de ingeniería de software para construir confianza computable y reducir asimetrías de información.
+            </p>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <span class="text-2xl">🏛️</span>
+            <h4 class="font-bold text-sm text-[#012D1D] mt-2 mb-2">Convergencia Legal-Tech</h4>
+            <p class="text-xs text-[#555555] leading-relaxed">
+              La combinación pionera entre el Fideicomiso Civil inembargable (CCyCN 1666) y el Smart Contract EVM proporciona una seguridad jurídica sin precedentes en el mercado argentino.
+            </p>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl border border-[#E2DDD7] shadow-sm">
+            <span class="text-2xl">📈</span>
+            <h4 class="font-bold text-sm text-[#012D1D] mt-2 mb-2">Viabilidad Integral Demostrada</h4>
+            <p class="text-xs text-[#555555] leading-relaxed">
+              El plan de negocios valida un VAN de USD 184.250 y TIR del 48.7%, con un prototipo funcional compilado y desplegado con alta fidelidad arquitectónica.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-8 text-center">
+          <p class="text-lg font-bold text-[#012D1D]">¡Muchas gracias por su atención!</p>
+          <p class="text-xs text-[#555555] mt-1">Quedo a entera disposición de los profesores Banega y Sartorio para la ronda de preguntas técnicas.</p>
+        </div>
+      </div>
+
+      <div class="border-t border-[#ECE7E2] pt-4 text-xs text-[#555555] flex justify-between">
+        <span>Agustín Faucetta · Facultad de Tecnología Informática · UAI</span>
+        <span class="font-bold text-[#006C48]">Fin de la Presentación</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BOTTOM BAR / NAVEGACIÓN -->
+  <footer class="no-print bg-[#012D1D] border-t border-[#1B4332] text-white px-6 py-4 flex items-center justify-between z-20">
+    <div class="flex items-center gap-4">
+      <button onclick="prevSlide()" class="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold text-white flex items-center gap-2 transition-all">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        <span>Anterior</span>
+      </button>
+
+      <div class="hidden md:flex items-center gap-1.5" id="dotsContainer">
+        <!-- Generado dinámicamente -->
+      </div>
+
+      <button onclick="nextSlide()" class="px-4 py-2 rounded-lg bg-[#006C48] hover:bg-emerald-600 text-xs font-bold text-white flex items-center gap-2 transition-all">
+        <span>Siguiente</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+    <div class="text-xs font-mono text-white/70">
+      Diapositiva <span id="currentSlideNum" class="text-white font-bold">1</span> de <span id="totalSlidesNum">12</span>
+    </div>
+  </footer>
+
+  <!-- DRAWER LATERAL: GUIÓN DEL ORADOR (SPEAKER NOTES) -->
+  <div id="speakerNotesDrawer" class="no-print fixed inset-y-0 right-0 w-full max-w-md bg-[#1B2420] text-white border-l border-[#2C3E36] shadow-2xl p-6 transform translate-x-full transition-transform duration-300 z-30 flex flex-col justify-between">
+    <div>
+      <div class="flex items-center justify-between border-b border-[#2C3E36] pb-4 mb-4">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+          <h3 class="font-bold text-sm text-white">Guión del Orador (Speaker Notes)</h3>
+        </div>
+        <button onclick="toggleSpeakerNotes()" class="text-white/60 hover:text-white text-lg font-bold">✕</button>
+      </div>
+
+      <div class="text-xs text-emerald-400 font-mono mb-2" id="notesSlideTitle">
+        Diapositiva 1: Portada
+      </div>
+
+      <div id="notesContent" class="text-xs text-white/80 space-y-3 leading-relaxed overflow-y-auto max-h-[70vh] pr-2">
+        <!-- Dinámico según la diapositiva -->
+      </div>
+    </div>
+
+    <div class="border-t border-[#2C3E36] pt-3 text-[11px] text-white/50 flex justify-between">
+      <span>Usa Flechas ◄ ► para cambiar de slide</span>
+      <span class="font-bold text-emerald-400">Tips de Defensa UAI</span>
+    </div>
+  </div>
+
+  <!-- MODAL: VISOR DE DIAGRAMAS UML EN ALTA RESOLUCIÓN -->
+  <div id="umlModal" class="no-print fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-5xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="px-6 py-4 bg-[#012D1D] text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold px-2 py-0.5 rounded bg-[#006C48] text-white">UML 2.5</span>
+          <h3 id="umlModalTitle" class="text-sm font-bold">Diagrama UML</h3>
+        </div>
+        <div class="flex items-center gap-3">
+          <a id="umlDownloadBtn" href="#" download class="px-3 py-1 rounded bg-white/20 hover:bg-white/30 text-xs font-bold text-white transition-all">
+            Descargar SVG
+          </a>
+          <button onclick="closeUmlModal()" class="text-white hover:text-gray-300 font-bold text-lg">✕</button>
+        </div>
+      </div>
+      <div class="flex-1 p-4 overflow-auto flex items-center justify-center bg-[#FBF9F5]">
+        <img id="umlModalImg" src="" alt="Diagrama UML" class="max-w-full max-h-[75vh] object-contain shadow-lg rounded-lg border border-[#E2DDD7]">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const speakerNotesData = {
+      1: {
+        title: "Diapositiva 1: Portada Formal",
+        time: "1:00 min",
+        script: "Buenos días profesores Matías Banega y Alejandro Sartorio. Mi nombre es Agustín Faucetta y hoy presento mi Trabajo Final de Grado del Seminario de Aplicación Profesional, titulado 'Seed & Grow: Plataforma Descentralizada de Financiamiento Colectivo y Custodia Escrow Inteligente en Base L2 para Proyectos Productivos, Industriales y Tecnológicos con Fideicomisos Inembargables (CCyCN 1666) y Panel Pericial Colegiado Multidisciplinario'.",
+        keyPoint: "Mencionar de entrada la articulación entre tecnología blockchain L2, fideicomisos inembargables y el financiamiento de proyectos de la economía real (plantas industriales, biofábricas, infraestructura civil, energías limpias y software) en Argentina.",
+        defenseQuestion: "¿Por qué elegiste un enfoque de proyectos productivos multisectoriales y no de donaciones genéricas? Respuesta: Porque en Argentina el problema no es la filantropía, sino la falta de financiamiento seguro para proyectos productivos de la economía real (industria, infraestructura, biotecnología, tecnología). Demostramos que con custodia escrow y peritos colegiados según la disciplina técnica, se elimina el riesgo moral y se atrae capital real sin depender de subsidios ni de tasas bancarias usurarias."
+      },
+      2: {
+        title: "Diapositiva 2: Diagnóstico y Contexto",
+        time: "1:30 min",
+        script: "En Argentina nos encontramos con una paradoja estructural: los sectores productivos, industriales y tecnológicos sufren un estrangulamiento crediticio severo. Las tasas bancarias activas superan el 80% y los bancos exigen hipotecas que una pyme o emprendedor no puede entregar. Por otro lado, en el crowdfunding tradicional el inversor entrega un cheque en blanco sin garantías de ejecución física de la obra.",
+        keyPoint: "Destacar los 3 pilares del problema: exclusión crediticia bancaria, riesgo moral por falta de auditoría técnica independiente, y la existencia de ahorristas con liquidez que buscan proyectos productivos de valor real.",
+        defenseQuestion: "¿Pero los inversores argentinos realmente van a financiar proyectos colectivos? Respuesta: Absolutamente, profesor. En Argentina el financiamiento colectivo productivo tiene una demanda insatisfecha masiva porque las PyMEs no consiguen crédito bancario y los ahorristas buscan protegerse de la inflación en proyectos tangibles de la economía real. Seed & Grow ofrece el marco de máxima certeza: el inversor no entrega un cheque en blanco, sino que su dinero queda en fideicomiso inembargable y bajo custodia de Smart Contracts Escrow con peritaje colegiado obligatorio."
+      },
+      3: {
+        title: "Diapositiva 3: La Solución Seed & Grow",
+        time: "1:30 min",
+        script: "La solución que diseñé se basa en un concepto que denominamos 'El Doble Candado': por el lado legal, cada proyecto constituye un Fideicomiso Ordinario bajo el artículo 1666 del Código Civil y Comercial, creando un patrimonio separado inembargable. Por el lado tecnológico, los fondos se depositan en un Smart Contract Escrow autoejecutable en Base Layer 2 que jamás libera el capital completo por adelantado, sino estrictamente por tramos.",
+        keyPoint: "Enfatizar que el dinero no entra a la cuenta bancaria de nadie hasta que el hito esté terminado.",
+        defenseQuestion: "¿Qué pasa si Seed & Grow quiebra? Respuesta: Por el art. 1666 del CCyCN y la custodia de smart contracts, los fondos no son de la plataforma; están protegidos en patrimonio fiduciario inembargable y vuelven a los inversores."
+      },
+      4: {
+        title: "Diapositiva 4: Auditoría Pericial Colegiada según Vertical",
+        time: "2:00 min",
+        script: "Aquí radica la principal innovación de ingeniería del proyecto: ¿cómo sabe la blockchain qué pasa en el mundo real? Lo resuelve el Panel Pericial Colegiado Multidisciplinario. La plataforma abarca proyectos de todo tipo de la economía real asignando peritos según su incumbencia legal: un ingeniero industrial o químico para biofábricas y plantas de manufactura; un ingeniero civil para obras de infraestructura y construcción; un ingeniero en sistemas para hitos de software y plataformas IT; un ingeniero ambiental o agrónomo para desarrollos de bioproductos y energías limpias; y un contador público para la auditoría contable y balances. El perito valida el avance técnico fáctico y firma con su clave criptográfica privada. Solo con esa firma y el quórum de los inversores se desbloquea el pago en el escrow.",
+        keyPoint: "Explicar cómo se resuelve el 'Problema del Oráculo' en Web3 mediante responsabilidad profesional matriculada según la industria.",
+        defenseQuestion: "¿Por qué un perito colegiado y cómo se adapta a proyectos de todo tipo? Respuesta: Porque Seed & Grow es una plataforma multisectorial. La plataforma asigna peritos matriculados según la incumbencia técnica del proyecto (Colegios de Ingenieros Industriales, Civiles, de Sistemas, o Consejos de Ciencias Económicas), garantizando responsabilidad civil y penal en cada vertical técnica."
+      },
+      5: {
+        title: "Diapositiva 5: Rampa Dual Fiat-Crypto",
+        time: "1:30 min",
+        script: "Para evitar la barrera tecnológica de la Web3, diseñamos una rampa dual: el inversor puede aportar en pesos argentinos por CBU bancario o Mercado Pago, o bien conectar su billetera Web3 en stablecoins USDC. Ambas vías convergen en la misma cuota-parte fiduciaria tokenizada con cumplimiento estricto de KYC/UIF.",
+        keyPoint: "El usuario común no necesita saber qué es una clave privada ni pagar gas para participar.",
+        defenseQuestion: "¿Cómo se maneja la devaluación del peso si aportan en ARS? Respuesta: Los aportes en pesos se dolarizan al tipo de cambio fiduciario del día del depósito, preservando el valor en moneda dura dentro del fideicomiso."
+      },
+      6: {
+        title: "Diapositiva 6: Modelo de Negocio",
+        time: "1:00 min",
+        script: "El modelo de monetización se basa en una comisión por éxito (Success Fee) del 3.5% al 5% deducida exclusivamente del capital que se libera contra hitos auditados. No cobramos por mantenimiento de cuenta ni pedimos un cheque en blanco. Si el proyecto fracasa o se frena, la plataforma no cobra.",
+        keyPoint: "Total alineación de incentivos entre inversor, emprendedor y plataforma.",
+        defenseQuestion: "¿Cómo se sustenta la empresa en los primeros meses? Respuesta: Mediante la tasa de estructuración fiduciaria fija (USD 500 a 1.200) abonada al postular el proyecto."
+      },
+      7: {
+        title: "Diapositiva 7: Evaluación Económica y Financiera",
+        time: "1:30 min",
+        script: "La inversión inicial requerida es de USD 35.000 para desarrollo de software, auditoría de seguridad y encuadre fiduciario. A una tasa de descuento del 15% anual en dólares, el proyecto arroja un Valor Actual Neto (VAN) de USD 184.250 y una Tasa Interna de Retorno (TIR) del 48.7%, alcanzando el punto de equilibrio en el mes 9 con un período de recupero de 14 meses.",
+        keyPoint: "Citar con precisión los números del Capítulo 8 del plan de negocios.",
+        defenseQuestion: "¿Por qué la tasa de corte es del 15%? Respuesta: Porque es el WACC que refleja la prima de riesgo país en Argentina para startups de base tecnológica."
+      },
+      8: {
+        title: "Diapositiva 8: Arquitectura de Software",
+        time: "2:00 min",
+        script: "A nivel de ingeniería, la solución adopta una arquitectura desacoplada en 4 capas: Frontend React 19 SPA responsivo, Backend Express en Google Cloud Run, Base de datos relacional PostgreSQL para consistencia financiera y Firestore para auditorías en tiempo real, y finalmente la capa blockchain en Base L2, con costos de gas menores a un centavo y confirmación en 2 segundos.",
+        keyPoint: "Destacar por qué Base L2 y no Ethereum L1 (costos de gas 100 veces menores y velocidad).",
+        defenseQuestion: "¿Qué estándares de seguridad implementaron en los smart contracts? Respuesta: OpenZeppelin v5, protección explícita ReentrancyGuard, control de roles AccessControl y pausabilidad en caso de contingencia."
+      },
+      9: {
+        title: "Diapositiva 9: Modelado Formal UML",
+        time: "1:30 min",
+        script: "Conforme a las guías de la Facultad de Tecnología Informática de la UAI, se modelaron 5 diagramas fundamentales: Casos de Uso, Diagrama de Clases del Dominio, Diagrama de Secuencia del Desembolso Escrow, Modelo DER de base de datos normalizado en 3FN y Diagrama de Despliegue Físico. Todos disponibles en alta definición.",
+        keyPoint: "Ofrecer abrir cualquier diagrama si el tribunal lo solicita.",
+        defenseQuestion: "Mostrar el diagrama de secuencia. Respuesta: Hacé clic en 'Diagrama 3' para proyectarlo en pantalla completa."
+      },
+      10: {
+        title: "Diapositiva 10: Encuadre Legal y Fiscal Argentino",
+        time: "1:30 min",
+        script: "Seed & Grow se concibió bajo estricta observancia del marco regulatorio argentino: Arts. 1666 a 1700 del CCyCN para la figura fiduciaria, Ley 27.349 de Financiamiento Colectivo de la CNV, Ley 27.739 de registro de Proveedores de Servicios de Activos Virtuales (PSAV) ante la UIF, y generación automatizada de certificados para ARCA.",
+        keyPoint: "Demostrar solvencia regulatoria; esto impresiona muy positivamente al tribunal.",
+        defenseQuestion: "¿Qué dice la AFIP/ARCA sobre esto? Respuesta: Se emite el certificado bajo el artículo 98 de la Ley de Ganancias para el cómputo de rendimientos de fideicomisos financieros."
+      },
+      11: {
+        title: "Diapositiva 11: Caso Piloto en Producción",
+        time: "1:30 min",
+        script: "Para validar el prototipo implementamos el caso real 'Biofábrica Serrana', un proyecto de bioinsumos en Córdoba con financiamiento de USD 25.000. El Hito 1 fue auditado y liberado con éxito; el Hito 2 cuenta con sensores de humedad de suelo y pH conectados por telemetría IoT en vivo.",
+        keyPoint: "Invitar al tribunal a ver el sistema funcionando en vivo.",
+        defenseQuestion: "¿Cómo se comunican los sensores IoT? Respuesta: Envían telemetría vía protocolo MQTT / HTTP a nuestro backend y se visualizan en tiempo real en la pantalla de telemetría."
+      },
+      12: {
+        title: "Diapositiva 12: Conclusiones y Cierre",
+        time: "1:00 min",
+        script: "En conclusión, Seed & Grow demuestra que la ingeniería en sistemas informáticos tiene el poder de resolver problemas reales de nuestra economía. Unimos la certeza del código abierto con la solidez de las instituciones profesionales y fiduciarias argentinas. Agradezco a los profesores Banega y Sartorio por su guía durante la cursada y quedo abierto a sus preguntas.",
+        keyPoint: "Cierre seguro, agradecido y profesional mirando al tribunal.",
+        defenseQuestion: "Estar listo para preguntas puntuales sobre el código o la base de datos."
+      }
+    };
+
+    let currentSlide = 1;
+    const totalSlides = 12;
+
+    function init() {
+      // Generar dots
+      const dotsContainer = document.getElementById('dotsContainer');
+      for (let i = 1; i <= totalSlides; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'w-2 h-2 rounded-full bg-white/30 hover:bg-white transition-all cursor-pointer';
+        dot.onclick = () => goToSlide(i);
+        dot.id = 'dot-' + i;
+        dotsContainer.appendChild(dot);
+      }
+      updateSlideView();
+    }
+
+    function goToSlide(n) {
+      if (n < 1 || n > totalSlides) return;
+      document.querySelector('.slide[data-slide="' + currentSlide + '"]').classList.remove('active');
+      currentSlide = n;
+      document.querySelector('.slide[data-slide="' + currentSlide + '"]').classList.add('active');
+      updateSlideView();
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) goToSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) goToSlide(currentSlide - 1);
+    }
+
+    function updateSlideView() {
+      document.getElementById('currentSlideNum').innerText = currentSlide;
+      
+      // Update dots
+      for (let i = 1; i <= totalSlides; i++) {
+        const dot = document.getElementById('dot-' + i);
+        if (dot) {
+          if (i === currentSlide) {
+            dot.className = 'w-6 h-2 rounded-full bg-emerald-400 transition-all';
+          } else {
+            dot.className = 'w-2 h-2 rounded-full bg-white/30 hover:bg-white/70 transition-all cursor-pointer';
+          }
+        }
+      }
+
+      // Update speaker notes
+      const notes = speakerNotesData[currentSlide] || {
+        title: "Diapositiva " + currentSlide,
+        time: "1:00 min",
+        script: "Explicar los conceptos principales de esta sección.",
+        keyPoint: "Destacar los puntos clave.",
+        defenseQuestion: "Responder con tranquilidad y rigor técnico."
+      };
+
+      document.getElementById('notesSlideTitle').innerText = notes.title + " · (" + notes.time + ")";
+      document.getElementById('notesContent').innerHTML = 
+        '<div class="bg-black/30 p-3 rounded-lg border border-white/10 mb-3">' +
+          '<strong class="text-emerald-400 block mb-1">🗣️ ¿Qué decir en esta diapositiva?</strong>' +
+          '<p class="text-white/90 italic">' + notes.script + '</p>' +
+        '</div>' +
+        '<div class="bg-black/30 p-3 rounded-lg border border-white/10 mb-3">' +
+          '<strong class="text-amber-400 block mb-1">🎯 Punto clave a remarcar:</strong>' +
+          '<p class="text-white/80">' + notes.keyPoint + '</p>' +
+        '</div>' +
+        '<div class="bg-black/30 p-3 rounded-lg border border-white/10">' +
+          '<strong class="text-red-400 block mb-1">❓ Pregunta típica del Tribunal y cómo responder:</strong>' +
+          '<p class="text-white/80">' + notes.defenseQuestion + '</p>' +
+        '</div>';
+    }
+
+    function toggleSpeakerNotes() {
+      const drawer = document.getElementById('speakerNotesDrawer');
+      const isOpen = !drawer.classList.contains('translate-x-full');
+      if (isOpen) {
+        drawer.classList.add('translate-x-full');
+      } else {
+        drawer.classList.remove('translate-x-full');
+      }
+    }
+
+    function openUmlModal(filename, title) {
+      document.getElementById('umlModalTitle').innerText = title;
+      document.getElementById('umlModalImg').src = '/assets/diagramas_uml/' + filename;
+      document.getElementById('umlDownloadBtn').href = '/assets/diagramas_uml/' + filename;
+      document.getElementById('umlModal').classList.remove('hidden');
+    }
+
+    function closeUmlModal() {
+      document.getElementById('umlModal').classList.add('hidden');
+    }
+
+    // Atajos de teclado: Flechas izquierda / derecha, Barra espaciadora, tecla N para notas
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      } else if (e.key === 'n' || e.key === 'N') {
+        toggleSpeakerNotes();
+      } else if (e.key === 'Escape') {
+        closeUmlModal();
+      }
+    });
+
+    window.onload = init;
+  </script>
+</body>
+</html>`;
+}

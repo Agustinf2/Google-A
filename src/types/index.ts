@@ -1,14 +1,28 @@
 export type ScreenView = 
+  | 'landing'
   | 'explorar' 
   | 'seguimiento' 
   | 'cartera' 
   | 'publicar' 
   | 'hitos-escrow' 
   | 'auditor' 
-  | 'gobernanza'
+  | 'gobernanza' 
   | 'login';
 
 export type UserRole = 'investor' | 'creator' | 'auditor';
+
+export interface KycData {
+  fullName: string;
+  dniCuil: string;
+  nationality: string;
+  isPep: boolean; // Persona Expuesta Políticamente
+  fundsOrigin: string;
+  taxStatus: string; // ej. Monotributo, Responsable Inscripto, Empleado
+  documentNumber?: string;
+  verificationHash: string;
+  verifiedAt: string;
+  riskScore: 'low' | 'medium' | 'high';
+}
 
 export interface UserAccount {
   type: 'wallet' | 'google' | 'email';
@@ -17,6 +31,8 @@ export interface UserAccount {
   avatar?: string;
   balanceUSDC?: number;
   network?: string;
+  kycStatus?: 'unverified' | 'pending' | 'verified' | 'rejected';
+  kycData?: KycData;
 }
 
 export interface Project {

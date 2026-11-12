@@ -4,9 +4,10 @@ import { LOGO_URL } from '../data/mockData';
 
 interface FooterProps {
   onNavigate: (screen: ScreenView) => void;
+  onOpenLegalFaq?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegalFaq }) => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
@@ -83,19 +84,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   Publicar proyecto
                 </button>
               </li>
-              <li className="pt-1 border-t border-[#ece7e2]">
-                <a
-                  href="/manual_blockchain_desde_cero_con_graficos.pdf"
-                  download="manual_blockchain_desde_cero_con_graficos.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-[#012d1d] transition-colors inline-flex items-center gap-1.5 font-bold text-primary"
-                  title="Descargar Manual Técnico de Blockchain con Gráficos en PDF"
-                >
-                  <span className="material-symbols-outlined text-[15px]">picture_as_pdf</span>
-                  <span>Manual Blockchain (PDF)</span>
-                </a>
-              </li>
             </ul>
           </div>
 
@@ -105,27 +93,27 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <ul className="space-y-2 text-[13px] text-[#414844]">
               <li>
                 <button onClick={() => onNavigate('explorar')} className="hover:text-[#012d1d] transition-colors cursor-pointer text-left">
-                  Agroecología &amp; Suelos
+                  Biotecnología &amp; Biofábricas
                 </button>
               </li>
               <li>
                 <button onClick={() => onNavigate('explorar')} className="hover:text-[#012d1d] transition-colors cursor-pointer text-left">
-                  Reforestación Nativa &amp; Biodiversidad
+                  Energías Limpias &amp; Renovables
                 </button>
               </li>
               <li>
                 <button onClick={() => onNavigate('explorar')} className="hover:text-[#012d1d] transition-colors cursor-pointer text-left">
-                  Energía Limpia Comunitaria
+                  Software, Robótica &amp; Tecnología
                 </button>
               </li>
               <li>
                 <button onClick={() => onNavigate('explorar')} className="hover:text-[#012d1d] transition-colors cursor-pointer text-left">
-                  Sistemas Alimentarios de Proximidad
+                  Desarrollos Productivos &amp; Suelos
                 </button>
               </li>
               <li>
                 <button onClick={() => onNavigate('explorar')} className="hover:text-[#012d1d] transition-colors cursor-pointer text-left">
-                  Economía Circular &amp; Upcycling
+                  Energía Limpia &amp; Obras Civiles
                 </button>
               </li>
             </ul>
@@ -164,7 +152,16 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         {/* Bottom strip */}
         <div className="pt-6 border-t border-[#ece7e2] flex flex-col sm:flex-row items-center justify-between gap-4 text-[#414844] text-[11px] font-bold">
           <p>© 2025 Seed &amp; Grow Co-op. Todos los derechos reservados.</p>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-wrap">
+            {onOpenLegalFaq && (
+              <button
+                onClick={onOpenLegalFaq}
+                className="hover:text-[#012d1d] text-[#006c48] transition-colors cursor-pointer flex items-center gap-1 font-bold"
+              >
+                <span className="material-symbols-outlined text-[14px]">gavel</span>
+                <span>Marco Legal &amp; FAQ</span>
+              </button>
+            )}
             <a href="#" onClick={(e) => { e.preventDefault(); alert("Seed & Grow opera bajo custodia segregada en contratos inteligentes de red Base y gobernanza colegiada."); }} className="hover:text-[#1d1b19] transition-colors">
               Términos &amp; Gobernanza
             </a>

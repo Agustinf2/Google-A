@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ScreenView, Investment, UserAccount } from '../types';
 import { INITIAL_INVESTMENTS } from '../data/mockData';
+import { PortfolioDistributionChart } from './PortfolioDistributionChart';
+import { createTaxReportPdf } from '../lib/generateTaxReportPdf';
 
 interface CarteraScreenProps {
   onNavigate: (screen: ScreenView) => void;
@@ -23,6 +25,17 @@ export const CarteraScreen: React.FC<CarteraScreenProps> = ({ onNavigate, onOpen
   const handleClaim = (inv: Investment) => {
     setClaimToast(`Cobro de dividendos/cuota de ${inv.title} procesado exitosamente en tu wallet.`);
     setTimeout(() => setClaimToast(null), 4000);
+  };
+
+  const handleDownloadTaxReport = () => {
+    try {
+      const doc = createTaxReportPdf(currentUser, INITIAL_INVESTMENTS);
+      doc.save(`certificado_fiscal_arca_seedgrow_${currentUser?.name?.replace(/\s+/g, '_') || 'inversor'}_2025.pdf`);
+      setClaimToast('¡Certificado Fiscal ARCA 2025 generado y descargado con éxito!');
+      setTimeout(() => setClaimToast(null), 5000);
+    } catch (err) {
+      console.error('Error generating tax report:', err);
+    }
   };
 
   return (
@@ -59,10 +72,18 @@ export const CarteraScreen: React.FC<CarteraScreenProps> = ({ onNavigate, onOpen
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <button
+            onClick={handleDownloadTaxReport}
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-surface-container-lowest hover:bg-surface-container-high border border-outline-variant/40 text-on-surface font-bold text-xs transition shadow-2xs cursor-pointer"
+            title="Descargar Certificado Fiscal Oficial para presentar ante ARCA (ex-AFIP) y contador"
+          >
+            <span className="material-symbols-outlined text-base text-primary">description</span>
+            <span>Informe Fiscal ARCA (PDF)</span>
+          </button>
           <button
             onClick={() => onNavigate('explorar')}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-xs hover:bg-primary-container transition shadow-sm"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-xs hover:bg-primary-container transition shadow-sm cursor-pointer"
           >
             <span className="material-symbols-outlined text-base">add_circle</span>
             Invertir en Nuevo Proyecto
@@ -108,6 +129,13 @@ export const CarteraScreen: React.FC<CarteraScreenProps> = ({ onNavigate, onOpen
           <div className="text-xs text-outline font-semibold">Auditado satelitalmente</div>
         </div>
       </div>
+
+      {/* Gráfico de Pastel de Distribución con Recharts */}
+      <PortfolioDistributionChart
+        investments={INITIAL_INVESTMENTS}
+        onNavigate={onNavigate}
+        onOpenNftModal={onOpenNftModal}
+      />
 
       {/* Filter Tabs */}
       <div className="flex items-center gap-2 border-b border-outline-variant/30 pb-3">

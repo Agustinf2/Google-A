@@ -1,0 +1,99 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Seed & Grow//Cronograma de 6 Semanas Dev//ES
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Cronograma 6 Semanas: De la Facultad a Producción
+X-WR-TIMEZONE:America/Argentina/Buenos_Aires
+X-WR-CALDESC:Plan intensivo de 6 semanas para estudiantes de Ingeniería en Sistemas para pasar de la teoría a crear apps reales en producción.
+BEGIN:VEVENT
+UID:seedgrow-week-1-1793901600000@seedgrow.coop
+DTSTAMP:20261105T151841Z
+DTSTART:20261105T180000Z
+DTEND:20261105T200000Z
+SUMMARY:Semana 1: TypeScript, React Funcional & Tailwind CSS
+DESCRIPTION:De la teoría de Algoritmos y POO a interfaces web reactivas y tipadas.\n\nPUENTE CON LA FACULTAD:\nAprovecha lo que viste en Paradigmas de Programación y POO: las interfaces de TypeScript son contratos de tipos que evitan el 90% de los bugs en runtime.\n\nPLAN DE ESTUDIO DIARIO:\n• Día 1 - TypeScript Práctico: Tipos primitivos, Interfaces, Generics básicos y Union Types. -> Práctica: Tipar modelos de datos del mundo real (Usuario, Proyecto, Transacción) sin usar "any".\n• Día 2 - React Moderno & Hooks: Componentes funcionales, useState, useEffect, useRef y ciclo de vida moderno. -> Práctica: Crear una mini-app interactiva con estados condicionales y efectos limpios.\n• Día 3 - Tailwind CSS & Diseño Limpio: Utility-first styling, flexbox/grid responsivo, tipografía y paleta de colores. -> Práctica: Replicar una card de producto o dashboard sin escribir una sola línea de CSS tradicional.\n• Día 4 - Componentes Compuestos & Props: Descomposición modular: Atomic Design pragmático, Children props y callbacks. -> Práctica: Construir un modal genérico reutilizable con backdrop y accesibilidad básica.\n• Día 5 - Integración & Vite Build: Ecosistema Vite, TypeScript estricto, variables de entorno y linters. -> Práctica: Armar la estructura base de tu portfolio o proyecto personal y compilarlo con Vite.\n\nOBJETIVO ENTREGABLE:\nEntregable Semana 1: Landing interactiva de un proyecto propio con componentes tipados y diseño profesional.\n\nHERRAMIENTAS CLAVE:\nVite, React 19 / 18, TypeScript, Tailwind CSS, VS Code (Tailwind + ESLint extensions)
+LOCATION:Entorno de Desarrollo / VS Code
+STATUS:CONFIRMED
+BEGIN:VALARM
+TRIGGER:-PT30M
+ACTION:DISPLAY
+DESCRIPTION:Recordatorio: Semana 1: TypeScript, React Funcional & Tailwind CSS
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:seedgrow-week-2-1794506400000@seedgrow.coop
+DTSTAMP:20261105T151841Z
+DTSTART:20261112T180000Z
+DTEND:20261112T200000Z
+SUMMARY:Semana 2: Arquitectura de Estado & Gráficos con Recharts
+DESCRIPTION:Manejo de estado global, navegación SPA y dashboards analíticos con Recharts.\n\nPUENTE CON LA FACULTAD:\nAplica conceptos de Ingeniería de Software (Separación de incumbencias y Patrón MVC/Flux): el estado de la UI nunca debe acoplarse con la lógica de render.\n\nPLAN DE ESTUDIO DIARIO:\n• Día 1 - Gestión de Estado Global: Context API vs Zustand/Redux. Cuándo usar estado local vs global. -> Práctica: Crear un store para gestionar el usuario activo, roles y notificaciones toast.\n• Día 2 - Formularios Robustos & Validación: Formularios controlados, validación con Zod o regex, manejo de errores de input. -> Práctica: Formulario de registro con validación en vivo de CUIT/CUIL y DNI argentino.\n• Día 3 - Visualización con Recharts: Gráficos de pastel (PieChart), barras y líneas responsivas con tooltips a medida. -> Práctica: Implementar el gráfico de distribución de fondos de una cartera de inversiones.\n• Día 4 - Navegación y Vistas Modulares: Patrones de routing en SPA, vistas condicionales por rol y persistencia en localStorage. -> Práctica: Switcher de roles (Inversor / Creador / Auditor) con navegación protegida.\n• Día 5 - Pulido de UX & Microinteracciones: Feedback visual inmediato, spinners, esqueletos (skeletons) y toasts accesibles. -> Práctica: Integrar toasts animados para feedback de transacciones y operaciones exitosas.\n\nOBJETIVO ENTREGABLE:\nEntregable Semana 2: Dashboard financiero completo con gráficos interactivos y formularios validados.\n\nHERRAMIENTAS CLAVE:\nRecharts, Zustand / React Context, Zod, Heroicons / Material Symbols
+LOCATION:Entorno de Desarrollo / VS Code
+STATUS:CONFIRMED
+BEGIN:VALARM
+TRIGGER:-PT30M
+ACTION:DISPLAY
+DESCRIPTION:Recordatorio: Semana 2: Arquitectura de Estado & Gráficos con Recharts
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:seedgrow-week-3-1795111200000@seedgrow.coop
+DTSTAMP:20261105T151841Z
+DTSTART:20261119T180000Z
+DTEND:20261119T203000Z
+SUMMARY:Semana 3: Backend, Persistencia Firestore & Auth
+DESCRIPTION:Bases de datos en tiempo real, autenticación de usuarios y reglas de acceso seguras.\n\nPUENTE CON LA FACULTAD:\nConecta con tus materias de Bases de Datos y Seguridad en Redes: modelado de documentos vs tablas relacionales, ACID, transacciones y control de acceso RBAC.\n\nPLAN DE ESTUDIO DIARIO:\n• Día 1 - Modelado NoSQL en Firestore: Colecciones, subcolecciones, desnormalización estratégica y optimización de lecturas. -> Práctica: Escribir el blueprint JSON de una app con entidades: users, projects, milestones.\n• Día 2 - Consultas y Operaciones Atómicas: Where queries, ordenamiento compuesto, batches de escritura y transacciones. -> Práctica: Escribir una transacción que deduzca fondos de un inversor y sume al proyecto de forma atómica.\n• Día 3 - Autenticación con Google y Email: Firebase Auth, tokens JWT, persistencia de sesión y claims de usuario. -> Práctica: Implementar login con Google Workspace / Email y redirección automática.\n• Día 4 - Hardening con Firestore Rules: Reglas de seguridad declarativas, validación de schemas de datos y RBAC estricto. -> Práctica: Reglas que impidan que un usuario modifique el saldo de otro o firme sin rol de auditor.\n• Día 5 - Backend Proxy con Node & Express: Servidor Express con Node/TS, variables de entorno secretas y endpoints seguros. -> Práctica: Crear una ruta en Express que valide una petición autenticada con Bearer token.\n\nOBJETIVO ENTREGABLE:\nEntregable Semana 3: API Express + Firestore persistente con login real y reglas auditadas.\n\nHERRAMIENTAS CLAVE:\nFirebase Firestore, Firebase Auth, Express.js, TypeScript, Node.js
+LOCATION:Entorno de Desarrollo / VS Code
+STATUS:CONFIRMED
+BEGIN:VALARM
+TRIGGER:-PT30M
+ACTION:DISPLAY
+DESCRIPTION:Recordatorio: Semana 3: Backend, Persistencia Firestore & Auth
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:seedgrow-week-4-1795716000000@seedgrow.coop
+DTSTAMP:20261105T151841Z
+DTSTART:20261126T180000Z
+DTEND:20261126T210000Z
+SUMMARY:Semana 4: Web3 & Smart Contracts Escrow en Base L2
+DESCRIPTION:Entendiendo la Blockchain desde la ingeniería: contratos, gas y determinismo.\n\nPUENTE CON LA FACULTAD:\nAprovecha tus conocimientos de Sistemas Operativos, Criptografía y Redes Distribuidas: un smart contract es una máquina de estados determinista replicada por consenso.\n\nPLAN DE ESTUDIO DIARIO:\n• Día 1 - Arquitectura de Ethereum & EVM: Nodos, gas, mempool, transacciones firmadas con claves asimétricas secp256k1. -> Práctica: Configurar billetera MetaMask / Rabby en la red Base Sepolia y fondearla con faucet.\n• Día 2 - Solidity Práctico en Remix IDE: Estructuras, mappings, modificadores de acceso (`onlyOwner`, `whenNotPaused`) y eventos. -> Práctica: Escribir un contrato de Escrow básico que retenga fondos hasta una condición.\n• Día 3 - Multi-sig y Liberación por Hitos: Patrones de custodia, votación por quorum y auditoría con firma colegiada. -> Práctica: Implementar la función `releaseMilestone(uint256 id)` que exige 3/5 firmas.\n• Día 4 - Conexión Web3 desde React (Viem/Ethers): Conectar wallet, leer saldos de ERC-20 (USDC) y enviar transacciones con estimación de gas. -> Práctica: Crear el botón "Aportar Fondos Escrow" que firma y ejecuta la llamada on-chain.\n• Día 5 - Escucha de Eventos On-Chain: Eventos Solidity (`MilestoneCompleted`, `FundsDeposited`) y sincronización con Firestore. -> Práctica: Escuchar el evento on-chain y disparar una actualización visual en la UI en vivo.\n\nOBJETIVO ENTREGABLE:\nEntregable Semana 4: Smart Contract de custodia desplegado en Base Sepolia conectado al frontend React.\n\nHERRAMIENTAS CLAVE:\nRemix IDE, Solidity, Base Sepolia L2 Testnet, Viem / Ethers.js, MetaMask
+LOCATION:Entorno de Desarrollo / VS Code
+STATUS:CONFIRMED
+BEGIN:VALARM
+TRIGGER:-PT30M
+ACTION:DISPLAY
+DESCRIPTION:Recordatorio: Semana 4: Web3 & Smart Contracts Escrow en Base L2
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:seedgrow-week-5-1796320800000@seedgrow.coop
+DTSTAMP:20261105T151841Z
+DTSTART:20261203T180000Z
+DTEND:20261203T203000Z
+SUMMARY:Semana 5: Compliance KYC, Generación de PDFs & Calendario
+DESCRIPTION:Llevando la app al mundo real: regulaciones, firma digital y reportes ejecutivos.\n\nPUENTE CON LA FACULTAD:\nAplica Legislación y Ética Profesional: el software no existe en el vacío; debe cumplir con leyes de protección de datos (25.326), UIF y marcos impositivos.\n\nPLAN DE ESTUDIO DIARIO:\n• Día 1 - Flujo de Validación KYC / AML: Validación de identidad con DNI/CUIT, cotejo con listas de riesgo y declaraciones juradas. -> Práctica: Diseñar el modal de onboarding KYC con validación de campos oficiales argentinos.\n• Día 2 - Generación Dinámica de PDFs con jsPDF: Dibujar documentos vectoriales en cliente y servidor: tablas, encabezados y firmas. -> Práctica: Escribir un script generador de certificados de inversión o manuales técnicos en PDF.\n• Día 3 - Firma Digital y Trazabilidad: Hash criptográfico SHA-256 de documentos, almacenamiento en IPFS y registro notarial. -> Práctica: Generar el hash de un dictamen de auditoría y guardarlo en la base de datos.\n• Día 4 - Exportación a Calendarios (.ics): Estándar RFC 5545 iCalendar, generación de archivos .ics y enlaces directos de Google Calendar. -> Práctica: Construir el exportador de cronogramas y fechas límite a Google Calendar.\n• Día 5 - Auditoría de Seguridad & Performance: Prevención de inyecciones, saneamiento de entradas, bundle analysis y lazy loading. -> Práctica: Reducir el tamaño del bundle con dynamic imports y validar seguridad con linters.\n\nOBJETIVO ENTREGABLE:\nEntregable Semana 5: Módulo de onboarding KYC con generación de comprobantes PDF y sincronización a calendarios.\n\nHERRAMIENTAS CLAVE:\njsPDF, iCalendar RFC 5545, Crypto API (SHA-256), Zod
+LOCATION:Entorno de Desarrollo / VS Code
+STATUS:CONFIRMED
+BEGIN:VALARM
+TRIGGER:-PT30M
+ACTION:DISPLAY
+DESCRIPTION:Recordatorio: Semana 5: Compliance KYC, Generación de PDFs & Calendario
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:seedgrow-week-6-1796925600000@seedgrow.coop
+DTSTAMP:20261105T151841Z
+DTSTART:20261210T180000Z
+DTEND:20261210T210000Z
+SUMMARY:Semana 6: Despliegue en Producción & Publicación de Portfolio
+DESCRIPTION:De localhost al mundo: Cloud Run, Docker, Git flows y presentación profesional.\n\nPUENTE CON LA FACULTAD:\nCulmina con Gestión de Proyectos y Sistemas Distribuidos: entregar software que funciona en la nube, escalable, monitoreado y documentado con orgullo.\n\nPLAN DE ESTUDIO DIARIO:\n• Día 1 - Containerización y Entornos de Nube: Dockerfiles optimizados multi-stage, node_modules production, variables en Cloud Secret Manager. -> Práctica: Empaquetar la aplicación full-stack en una imagen liviana lista para desplegar.\n• Día 2 - Despliegue en Google Cloud Run / Vercel: Deploy automatizado, configuración de dominio propio con HTTPS y headers de seguridad. -> Práctica: Llevar tu proyecto a una URL pública en vivo compartible con reclutadores y clientes.\n• Día 3 - Git Profesional & README de Alto Impacto: Convención de commits (Conventional Commits), diagramas Mermaid de arquitectura en el README. -> Práctica: Armar el README.md de tu repo con capturas, badges, diagrama de flujo y cómo correrlo.\n• Día 4 - Preparación de Demo y Pitch Técnico: Cómo contar tu proyecto en una entrevista técnica o ante inversores: decisiones y trade-offs. -> Práctica: Grabar un video Loom o escribir una guía explicativa demostrando el valor de tu desarrollo.\n• Día 5 - Plan de Carrera y Siguientes Pasos: Estrategia para terminar materias faltantes mientras trabajas como dev o lideras tu startup. -> Práctica: Definir el backlog de tu próximo producto y armar tu CV/LinkedIn con proyectos reales en producción.\n\nOBJETIVO ENTREGABLE:\nEntregable Semana 6: Aplicación Full-Stack Web3 desplegada en la nube con código público en GitHub y documentación técnica completa.\n\nHERRAMIENTAS CLAVE:\nGoogle Cloud Run / Vercel, Git & GitHub, Docker, Loom, Mermaid.js
+LOCATION:Entorno de Desarrollo / VS Code
+STATUS:CONFIRMED
+BEGIN:VALARM
+TRIGGER:-PT30M
+ACTION:DISPLAY
+DESCRIPTION:Recordatorio: Semana 6: Despliegue en Producción & Publicación de Portfolio
+END:VALARM
+END:VEVENT
+END:VCALENDAR

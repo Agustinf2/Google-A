@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1150 780" width="100%" height="100%">
+  <defs>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="2" dy="2" stdDeviation="2.5" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="1150" height="780" fill="#FBF9F5" rx="12"/>
+
+  <!-- Título -->
+  <text x="575" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#012D1D">
+    SEED &amp; GROW — DIAGRAMA ENTIDAD-RELACIÓN (DER)
+  </text>
+  <text x="575" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555555">
+    Modelo Relacional Normalizado en 3FN (PostgreSQL / Drizzle ORM)
+  </text>
+
+  <!-- TABLA 1: users -->
+  <g transform="translate(50, 90)" filter="url(#shadow)">
+    <rect width="240" height="230" fill="#FFFFFF" stroke="#012D1D" stroke-width="1.5" rx="6"/>
+    <rect width="240" height="28" fill="#012D1D" rx="6 6 0 0"/>
+    <text x="120" y="19" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">users</text>
+    <text x="10" y="46" font-family="monospace" font-size="11" font-weight="bold" fill="#006C48">PK  id : UUID</text>
+    <text x="10" y="64" font-family="monospace" font-size="11" fill="#1D1B19">    wallet_address : VARCHAR(42)</text>
+    <text x="10" y="82" font-family="monospace" font-size="11" fill="#1D1B19">    email : VARCHAR(255)</text>
+    <text x="10" y="100" font-family="monospace" font-size="11" fill="#1D1B19">    dni_cuil : VARCHAR(13)</text>
+    <text x="10" y="118" font-family="monospace" font-size="11" fill="#1D1B19">    full_name : VARCHAR(150)</text>
+    <text x="10" y="136" font-family="monospace" font-size="11" fill="#1D1B19">    role : user_role_enum</text>
+    <text x="10" y="154" font-family="monospace" font-size="11" fill="#1D1B19">    matricula_nro : VARCHAR(50)</text>
+    <text x="10" y="172" font-family="monospace" font-size="11" fill="#1D1B19">    kyc_status : kyc_status_enum</text>
+    <text x="10" y="190" font-family="monospace" font-size="11" fill="#1D1B19">    created_at : TIMESTAMP</text>
+  </g>
+
+  <!-- TABLA 2: agricultural_lots (proyectos) -->
+  <g transform="translate(420, 90)" filter="url(#shadow)">
+    <rect width="280" height="260" fill="#FFFFFF" stroke="#012D1D" stroke-width="1.5" rx="6"/>
+    <rect width="280" height="28" fill="#012D1D" rx="6 6 0 0"/>
+    <text x="140" y="19" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">agricultural_lots (proyectos)</text>
+    <text x="10" y="46" font-family="monospace" font-size="11" font-weight="bold" fill="#006C48">PK  id : SERIAL</text>
+    <text x="10" y="64" font-family="monospace" font-size="11" fill="#006C48">FK  producer_id : UUID (users.id)</text>
+    <text x="10" y="82" font-family="monospace" font-size="11" fill="#1D1B19">    title : VARCHAR(200)</text>
+    <text x="10" y="100" font-family="monospace" font-size="11" fill="#1D1B19">    slug : VARCHAR(100) UNIQUE</text>
+    <text x="10" y="118" font-family="monospace" font-size="11" fill="#1D1B19">    target_usd : NUMERIC(14,2)</text>
+    <text x="10" y="136" font-family="monospace" font-size="11" fill="#1D1B19">    raised_usd : NUMERIC(14,2)</text>
+    <text x="10" y="154" font-family="monospace" font-size="11" fill="#1D1B19">    status : lot_status_enum</text>
+    <text x="10" y="172" font-family="monospace" font-size="11" fill="#1D1B19">    fideicomiso_cuit : VARCHAR(13)</text>
+    <text x="10" y="190" font-family="monospace" font-size="11" fill="#1D1B19">    escrow_address : VARCHAR(42)</text>
+    <text x="10" y="208" font-family="monospace" font-size="11" fill="#1D1B19">    nft_contract_address : VARCHAR</text>
+  </g>
+  <!-- Relación users -> lots (1 a N) -->
+  <line x1="290" y1="180" x2="420" y2="180" stroke="#012D1D" stroke-width="1.8"/>
+  <text x="300" y="170" font-family="Arial" font-size="11" fill="#012D1D">1</text>
+  <text x="400" y="170" font-family="Arial" font-size="11" fill="#012D1D">N</text>
+
+  <!-- TABLA 3: investments -->
+  <g transform="translate(50, 420)" filter="url(#shadow)">
+    <rect width="250" height="230" fill="#FFFFFF" stroke="#006C48" stroke-width="1.5" rx="6"/>
+    <rect width="250" height="28" fill="#006C48" rx="6 6 0 0"/>
+    <text x="125" y="19" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">investments (aportes)</text>
+    <text x="10" y="46" font-family="monospace" font-size="11" font-weight="bold" fill="#006C48">PK  id : SERIAL</text>
+    <text x="10" y="64" font-family="monospace" font-size="11" fill="#006C48">FK  user_id : UUID (users.id)</text>
+    <text x="10" y="82" font-family="monospace" font-size="11" fill="#006C48">FK  lot_id : INT (lots.id)</text>
+    <text x="10" y="100" font-family="monospace" font-size="11" fill="#1D1B19">    amount_usd : NUMERIC(12,2)</text>
+    <text x="10" y="118" font-family="monospace" font-size="11" fill="#1D1B19">    tokens_count : NUMERIC(10,2)</text>
+    <text x="10" y="136" font-family="monospace" font-size="11" fill="#1D1B19">    tx_hash : VARCHAR(66)</text>
+    <text x="10" y="154" font-family="monospace" font-size="11" fill="#1D1B19">    payment_method : VARCHAR(20)</text>
+    <text x="10" y="172" font-family="monospace" font-size="11" fill="#1D1B19">    created_at : TIMESTAMP</text>
+  </g>
+  <!-- users -> investments -->
+  <line x1="170" y1="320" x2="170" y2="420" stroke="#006C48" stroke-width="1.8"/>
+  <text x="175" y="340" font-family="Arial" font-size="11" fill="#006C48">1</text>
+  <text x="175" y="410" font-family="Arial" font-size="11" fill="#006C48">N</text>
+  <!-- lots -> investments -->
+  <line x1="450" y1="350" x2="300" y2="450" stroke="#012D1D" stroke-width="1.6"/>
+
+  <!-- TABLA 4: project_milestones -->
+  <g transform="translate(420, 420)" filter="url(#shadow)">
+    <rect width="280" height="240" fill="#FFFFFF" stroke="#012D1D" stroke-width="1.5" rx="6"/>
+    <rect width="280" height="28" fill="#1B4332" rx="6 6 0 0"/>
+    <text x="140" y="19" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">project_milestones</text>
+    <text x="10" y="46" font-family="monospace" font-size="11" font-weight="bold" fill="#006C48">PK  id : SERIAL</text>
+    <text x="10" y="64" font-family="monospace" font-size="11" fill="#006C48">FK  lot_id : INT (lots.id)</text>
+    <text x="10" y="82" font-family="monospace" font-size="11" fill="#1D1B19">    step_index : INT</text>
+    <text x="10" y="100" font-family="monospace" font-size="11" fill="#1D1B19">    title : VARCHAR(150)</text>
+    <text x="10" y="118" font-family="monospace" font-size="11" fill="#1D1B19">    amount_usd : NUMERIC(12,2)</text>
+    <text x="10" y="136" font-family="monospace" font-size="11" fill="#1D1B19">    status : milestone_status_enum</text>
+    <text x="10" y="154" font-family="monospace" font-size="11" fill="#1D1B19">    evidence_urls : TEXT[]</text>
+    <text x="10" y="172" font-family="monospace" font-size="11" fill="#1D1B19">    unlocked_at : TIMESTAMP</text>
+  </g>
+  <!-- lots -> milestones -->
+  <line x1="560" y1="350" x2="560" y2="420" stroke="#012D1D" stroke-width="1.8"/>
+  <text x="568" y="370" font-family="Arial" font-size="11" fill="#012D1D">1</text>
+  <text x="568" y="410" font-family="Arial" font-size="11" fill="#012D1D">N</text>
+
+  <!-- TABLA 5: audit_reports -->
+  <g transform="translate(800, 420)" filter="url(#shadow)">
+    <rect width="290" height="230" fill="#FFFFFF" stroke="#006C48" stroke-width="1.5" rx="6"/>
+    <rect width="290" height="28" fill="#006C48" rx="6 6 0 0"/>
+    <text x="145" y="19" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">audit_reports (peritajes)</text>
+    <text x="10" y="46" font-family="monospace" font-size="11" font-weight="bold" fill="#006C48">PK  id : SERIAL</text>
+    <text x="10" y="64" font-family="monospace" font-size="11" fill="#006C48">FK  milestone_id : INT</text>
+    <text x="10" y="82" font-family="monospace" font-size="11" fill="#006C48">FK  auditor_id : UUID (users.id)</text>
+    <text x="10" y="100" font-family="monospace" font-size="11" fill="#1D1B19">    verdict : VARCHAR(20)</text>
+    <text x="10" y="118" font-family="monospace" font-size="11" fill="#1D1B19">    sha256_hash : VARCHAR(64)</text>
+    <text x="10" y="136" font-family="monospace" font-size="11" fill="#1D1B19">    digital_sig_hex : TEXT</text>
+    <text x="10" y="154" font-family="monospace" font-size="11" fill="#1D1B19">    onchain_tx_hash : VARCHAR(66)</text>
+  </g>
+  <!-- milestones -> audit_reports -->
+  <line x1="700" y1="520" x2="800" y2="520" stroke="#006C48" stroke-width="1.8"/>
+  <text x="710" y="510" font-family="Arial" font-size="11" fill="#006C48">1</text>
+  <text x="785" y="510" font-family="Arial" font-size="11" fill="#006C48">1</text>
+</svg>

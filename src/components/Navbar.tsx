@@ -11,6 +11,7 @@ interface NavbarProps {
   currentUser?: UserAccount | null;
   onLogout?: () => void;
   onConnectWallet?: () => void;
+  onOpenKycModal?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -21,6 +22,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   bookmarksCount,
   currentUser,
   onLogout,
+  onOpenKycModal,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [roleMenuOpen, setRoleMenuOpen] = useState(false);
@@ -132,14 +134,13 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header className="fixed top-0 inset-x-0 z-50 bg-[#fef8f3]/95 backdrop-blur-md shadow-[0_1px_8px_rgba(27,67,50,0.04)]">
       {/* Top Banner / Ticker with Role Indicator */}
-      <div className="w-full bg-[#f2ede8] py-1 px-4 md:px-8 text-center text-[#414844] font-bold text-[11px] tracking-wide flex items-center justify-between border-b border-[#e2dcd6]">
-        <div className="flex items-center gap-2 truncate">
+      <div className="w-full bg-[#f2ede8] py-1 px-4 md:px-8 text-center text-[#414844] font-bold text-[11px] tracking-wide flex items-center justify-between border-b border-[#e2dcd6] overflow-hidden">
+        <div className="flex items-center gap-2 truncate min-w-0 pr-2">
           <span className="material-symbols-outlined text-[#006c48] text-[15px] shrink-0">rocket_launch</span>
-          <span className="hidden sm:inline">Seed &amp; Grow · Custodia Escrow Inteligente · Base L2</span>
-          <span className="sm:hidden">Seed &amp; Grow</span>
+          <span className="truncate">Seed &amp; Grow · Custodia Escrow Inteligente · Base L2</span>
         </div>
 
-        {/* Quick Role Switcher Pill */}
+        {/* Quick Role Switcher Pill in Top Banner */}
         <div className="flex items-center gap-2 relative shrink-0">
           <span className="text-[10px] text-[#717973] uppercase tracking-wider hidden md:inline">
             Modo rol:
@@ -253,8 +254,9 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Brand & Dynamic Nav Links */}
         <div className="flex items-center gap-4 lg:gap-6 shrink-0">
           <button
-            onClick={() => onNavigate('explorar')}
+            onClick={() => onNavigate(currentUser ? 'explorar' : 'landing')}
             className="flex items-center gap-2 shrink-0 cursor-pointer text-left focus:outline-none"
+            title="Ir a inicio / portada"
           >
             <img alt="Seed & Grow Logo" className="h-8 w-auto object-contain" src={LOGO_URL} />
             <span className="font-bold text-xl text-[#012d1d] tracking-tight">Seed &amp; Grow</span>
@@ -268,7 +270,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   key={link.id}
                   onClick={() => onNavigate(link.id)}
-                  className={`px-3 py-2 text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center gap-1.5 ${
+                  className={`px-3 py-2 text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
                     isActive
                       ? 'bg-[#1b4332] text-white shadow-xs'
                       : 'text-[#414844] hover:bg-[#f2ede8] hover:text-[#1d1b19]'
@@ -295,6 +297,53 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Right CTA Actions: Dynamic based on Active Role */}
         <div className="flex items-center gap-2 md:gap-3 shrink-0">
+          {/* Main Bar Role Indicator Pill (Fast switcher) */}
+          <button
+            onClick={() => setRoleMenuOpen(!roleMenuOpen)}
+            className={`hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl font-bold text-xs border transition cursor-pointer shadow-2xs shrink-0 whitespace-nowrap ${
+              userRole === 'investor'
+                ? 'bg-emerald-50 text-emerald-900 border-emerald-300 hover:bg-emerald-100'
+                : userRole === 'creator'
+                ? 'bg-amber-50 text-amber-900 border-amber-300 hover:bg-amber-100'
+                : 'bg-blue-50 text-blue-900 border-blue-300 hover:bg-blue-100'
+            }`}
+            title="Clic para cambiar de rol y ver sus permisos"
+          >
+            <span
+              className={`w-2 h-2 rounded-full ${
+                userRole === 'investor'
+                  ? 'bg-emerald-500'
+                  : userRole === 'creator'
+                  ? 'bg-amber-500'
+                  : 'bg-blue-600'
+              }`}
+            />
+            <span>{userRole === 'investor' ? 'Rol: Inversor' : userRole === 'creator' ? 'Rol: Creador' : 'Rol: Auditor'}</span>
+            <span className="material-symbols-outlined text-[14px]">arrow_drop_down</span>
+          </button>
+
+          {/* KYC Status Badge / Quick Trigger */}
+          {currentUser && (
+            currentUser.kycStatus === 'verified' ? (
+              <span
+                className="hidden xl:inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-emerald-100 text-emerald-800 text-[11px] font-bold border border-emerald-300 shrink-0"
+                title="Identidad verificada conforme a normativa CNV y UIF (Ley 25.246)"
+              >
+                <span className="material-symbols-outlined text-sm text-emerald-700">verified</span>
+                <span>KYC Verificado</span>
+              </span>
+            ) : (
+              <button
+                onClick={onOpenKycModal}
+                className="hidden xl:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-amber-100 text-amber-900 text-[11px] font-bold border border-amber-300 hover:bg-amber-200 transition cursor-pointer shrink-0"
+                title="Completa la validación requerida por UIF para invertir"
+              >
+                <span className="material-symbols-outlined text-sm text-amber-700">badge</span>
+                <span>Validar KYC/UIF</span>
+              </button>
+            )
+          )}
+
           {currentUser ? (
             <div className="relative">
               <button
@@ -355,6 +404,36 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </div>
                   </div>
 
+                  {/* KYC Verification status row */}
+                  {currentUser.kycStatus === 'verified' ? (
+                    <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 font-bold">
+                        <span className="material-symbols-outlined text-sm text-emerald-600">verified</span>
+                        <span>KYC / AML: Verificado</span>
+                      </div>
+                      <span className="text-[10px] font-mono text-emerald-700 bg-white px-1.5 py-0.2 rounded border border-emerald-200">
+                        UIF OK
+                      </span>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        setUserAccountMenuOpen(false);
+                        onOpenKycModal && onOpenKycModal();
+                      }}
+                      className="w-full text-left p-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-950 flex items-center justify-between transition cursor-pointer"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="material-symbols-outlined text-amber-600 text-base">badge</span>
+                        <div>
+                          <div className="font-bold text-xs">Validar Identidad KYC / UIF</div>
+                          <div className="text-[10px] text-amber-800">Requerido para invertir en lotes</div>
+                        </div>
+                      </div>
+                      <span className="material-symbols-outlined text-xs text-amber-700">arrow_forward</span>
+                    </button>
+                  )}
+
                   <div className="space-y-1 text-xs">
                     <button
                       onClick={copyAddressOrEmail}
@@ -409,7 +488,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* DYNAMIC CTA BUTTON BASED ON ACTIVE ROLE */}
           <button
             onClick={() => onNavigate(ctaButton.screen)}
-            className={`inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-xl transition-all shadow-sm cursor-pointer shrink-0 ${ctaButton.className}`}
+            className={`inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-xl transition-all shadow-sm cursor-pointer shrink-0 whitespace-nowrap ${ctaButton.className}`}
           >
             <span className="material-symbols-outlined text-sm">{ctaButton.icon}</span>
             <span>{ctaButton.label}</span>
