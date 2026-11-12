@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Descargar Plan Financiero Excel (.xlsx) - Agustín Faucetta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #fbf9f5;
+      color: #1d1b19;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2ddd7;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 580px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: #e6f4ea;
+      color: #006c48;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #012d1d;
+      margin: 0 0 12px;
+      line-height: 1.3;
+    }
+    p {
+      color: #555;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0 0 24px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #006c48;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 16px 32px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .btn:hover {
+      background: #012d1d;
+      transform: translateY(-1px);
+    }
+    .info {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid #f0eae1;
+      font-size: 12px;
+      color: #888;
+      text-align: left;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .info-row strong {
+      color: #333;
+    }
+    .links-extra {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    .links-extra a {
+      font-size: 13px;
+      color: #006c48;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .links-extra a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">UAI · Seminario de Aplicación Profesional</div>
+    <h1>Modelo Económico y Financiero<br>Seed &amp; Grow</h1>
+    <p>Planilla oficial en formato <strong>Microsoft Excel (.xlsx)</strong> con 7 hojas dinámicas, fórmulas financieras de VAN ($184.250), TIR (48.7%), Payback (14 meses) y Cash Flow mensualizado para el Capítulo 8 de la tesis UAI.</p>
+    
+    <a id="downloadBtn" href="/api/download/uai-excel" class="btn" download="Faucetta_Agustin_SAP_Plan_Financiero_SeedAndGrow.xlsx">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      Descargar Plan Financiero Excel (.xlsx)
+    </a>
+
+    <div class="info">
+      <div class="info-row"><span>Archivo:</span> <strong>Faucetta_Agustin_SAP_Plan_Financiero_SeedAndGrow.xlsx</strong></div>
+      <div class="info-row"><span>Hojas:</span> <strong>7 Hojas (Carátula, CAPEX, Costos, Ingresos, P&L, Cash Flow, VAN/TIR)</strong></div>
+      <div class="info-row"><span>Autor:</span> <strong>Agustín Faucetta (Ing. en Sistemas)</strong></div>
+      <div class="info-row"><span>Cátedra:</span> <strong>Prof. Banega, Matías · Prof. Sartorio, Alejandro</strong></div>
+    </div>
+
+    <div class="links-extra">
+      <a href="/descargar-tesis">Descargar Tesis Word (.docx)</a>
+      <span>·</span>
+      <a href="/pitch-deck">Ver Pitch Deck</a>
+      <span>·</span>
+      <a href="/descargas-academicas">Centro de Entregas</a>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(function() {
+      document.getElementById('downloadBtn').click();
+    }, 800);
+  </script>
+</body>
+</html>`);
+  });
+
+  // Dedicated direct download page for Word (.docx)
+  app.get(['/descargar-tesis', '/descargar-word'], (_req, res) => {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(`<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Descargar Tesis SAP UAI - Agustín Faucetta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #fbf9f5;
+      color: #1d1b19;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2ddd7;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 580px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: #e6f4ea;
+      color: #006c48;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #012d1d;
+      margin: 0 0 12px;
+      line-height: 1.3;
+    }
+    p {
+      color: #555;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0 0 24px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #012d1d;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 16px 32px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .btn:hover {
+      background: #006c48;
+      transform: translateY(-1px);
+    }
+    .info {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid #f0eae1;
+      font-size: 12px;
+      color: #888;
+      text-align: left;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .info-row strong {
+      color: #333;
+    }
+    .links-extra {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    .links-extra a {
+      font-size: 13px;
+      color: #006c48;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .links-extra a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">UAI · Seminario de Aplicación Profesional</div>
+    <h1>Trabajo Final de Grado<br>Seed &amp; Grow</h1>
+    <p>Documento completo en formato <strong>Microsoft Word (.docx)</strong> con carátula formal, ficha de seguimiento, resumen ejecutivo, 10 capítulos y 3 anexos conforme a la guía de la Facultad de Tecnología Informática.</p>
+    
+    <a id="downloadBtn" href="/api/download/uai-thesis" class="btn" download="Faucetta_Agustin_SAP_SeedAndGrow_UAI.docx">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+      Descargar Documento Word (.docx)
+    </a>
+
+    <div class="info">
+      <div class="info-row"><span>Archivo:</span> <strong>Faucetta_Agustin_SAP_SeedAndGrow_UAI.docx</strong></div>
+      <div class="info-row"><span>Autor:</span> <strong>Agustín Faucetta (Ing. en Sistemas)</strong></div>
+      <div class="info-row"><span>Cátedra:</span> <strong>Prof. Banega, Matías · Prof. Sartorio, Alejandro</strong></div>
+      <div class="info-row"><span>Estructura:</span> <strong>Bloque 1, Bloque 2 y Bloque 3 (Capítulos 1 al 10 + Anexos)</strong></div>
+    </div>
+
+    <div class="links-extra">
+      <a href="/descargar-excel">Descargar Plan Financiero (.xlsx)</a>
+      <span>·</span>
+      <a href="/pitch-deck">Ver Pitch Deck</a>
+      <span>·</span>
+      <a href="/descargas-academicas">Centro de Entregas</a>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(function() {
+      document.getElementById('downloadBtn').click();
+    }, 800);
+  </script>
+</body>
+</html>`);
+  });
+
+  // Centralized Academic Delivery Center (both Word and Excel with clear 1-click downloads)
+  app.get(['/descargas-academicas', '/entregas-uai', '/descargas'], (_req, res) => {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(`<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centro de Descargas Académicas UAI - Agustín Faucetta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #fbf9f5;
+      color: #1d1b19;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    .container {
+      max-width: 900px;
+      width: 100%;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .badge {
+      display: inline-block;
+      background: #e6f4ea;
+      color: #006c48;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #012d1d;
+      margin: 0 0 10px;
+      line-height: 1.2;
+    }
+    .subtitle {
+      color: #666;
+      font-size: 15px;
+      margin: 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2ddd7;
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+    .card-tag {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+    .tag-word { background: #e8f0fe; color: #1a73e8; }
+    .tag-excel { background: #e6f4ea; color: #137333; }
+    .card h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #012d1d;
+      margin: 0 0 10px;
+    }
+    .card p {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.6;
+      margin: 0 0 20px;
+    }
+    .file-meta {
+      background: #fbf9f5;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 24px;
+      font-size: 12px;
+    }
+    .file-meta-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      color: #666;
+    }
+    .file-meta-row strong {
+      color: #1d1b19;
+    }
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 14px 24px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-word {
+      background: #012d1d;
+      color: #ffffff;
+    }
+    .btn-word:hover {
+      background: #006c48;
+      transform: translateY(-2px);
+    }
+    .btn-excel {
+      background: #006c48;
+      color: #ffffff;
+    }
+    .btn-excel:hover {
+      background: #012d1d;
+      transform: translateY(-2px);
+    }
+    .extra-bar {
+      background: #ffffff;
+      border: 1px solid #e2ddd7;
+      border-radius: 16px;
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: gap;
+      gap: 16px;
+    }
+    .extra-bar span {
+      font-size: 14px;
+      color: #444;
+      font-weight: 600;
+    }
+    .btn-pitch {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #800000;
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+    .btn-pitch:hover {
+      background: #a00000;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="badge">Universidad Abierta Interamericana · Facultad de Tecnología Informática</div>
+      <h1>Entregables de Tesis SAP</h1>
+      <p class="subtitle">Alumno: <strong>Agustín Faucetta</strong> · Cátedra: <strong>Prof. Banega, Matías Pablo / Prof. Sartorio, Alejandro Roberto</strong></p>
+    </div>
+
+    <div class="grid">
+      <!-- CARD 1: WORD -->
+      <div class="card">
+        <span class="card-tag tag-word">Word (.docx)</span>
+        <div>
+          <h2>Tesis Completa SAP (Capítulos 1 al 10)</h2>
+          <p>Documento formal de tesis con carátula UAI, ficha de seguimiento, resumen ejecutivo, plan de negocios, plan de marketing, análisis legal fiduciario, arquitectura de software y 3 anexos normativos.</p>
+          <div class="file-meta">
+            <div class="file-meta-row"><span>Nombre:</span> <strong>Faucetta_Agustin_SAP_SeedAndGrow_UAI.docx</strong></div>
+            <div class="file-meta-row"><span>Tamaño:</span> <strong>~50 KB (Documento editable)</strong></div>
+            <div class="file-meta-row"><span>Versión:</span> <strong>v2.0 (Multidisciplinario Productivo e Industrial)</strong></div>
+          </div>
+        </div>
+        <a href="/api/download/uai-thesis" class="btn-download btn-word" download="Faucetta_Agustin_SAP_SeedAndGrow_UAI.docx">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Descargar Tesis Word (.docx)
+        </a>
+      </div>
+
+      <!-- CARD 2: EXCEL -->
+      <div class="card">
+        <span class="card-tag tag-excel">Excel (.xlsx)</span>
+        <div>
+          <h2>Plan Económico y Financiero (Capítulo 8)</h2>
+          <p>Planilla financiera con 7 hojas dinámicas: CAPEX/OPEX inicial (USD 35k), costos fijos y variables, proyección de ingresos a 3 años, estado de resultados, cash flow mensual y evaluación (VAN $184.250, TIR 48.7%, Payback 14m).</p>
+          <div class="file-meta">
+            <div class="file-meta-row"><span>Nombre:</span> <strong>Faucetta_Agustin_SAP_Plan_Financiero_SeedAndGrow.xlsx</strong></div>
+            <div class="file-meta-row"><span>Tamaño:</span> <strong>~20 KB (Fórmulas activas de Excel)</strong></div>
+            <div class="file-meta-row"><span>Contenido:</span> <strong>7 Hojas completas con formato institucional</strong></div>
+          </div>
+        </div>
+        <a href="/api/download/uai-excel" class="btn-download btn-excel" download="Faucetta_Agustin_SAP_Plan_Financiero_SeedAndGrow.xlsx">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          Descargar Plan Financiero (.xlsx)
+        </a>
+      </div>
+    </div>
+
+    <div class="extra-bar">
+      <span>Presentación de Defensa Oral con 12 Diapositivas y Guión de Orador ('N'):</span>
+      <a href="/pitch-deck" class="btn-pitch">
+        <span>Abrir Pitch Deck Interactivo</span>
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

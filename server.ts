@@ -22,13 +22,10 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-async function startServer() {
-  const app = express();
-  const PORT = Number(process.env.PORT) || 3000;
+export const app = express();
+app.use(express.json());
 
-  app.use(express.json());
-
-  // API Routes backed by PostgreSQL
+// API Routes backed by PostgreSQL
   app.get('/api/lots', async (_req, res) => {
     try {
       const lots = await getAllLots();
@@ -774,28 +771,37 @@ Responde siempre en español rioplatense neutro, claro, empático, sin inventar 
   // Serve static assets from public folder (PDF manuals, .ics calendars, assets)
   app.use(express.static(path.resolve(__dirname, 'public')));
 
+async function startServer() {
+  const PORT = Number(process.env.PORT) || 3000;
+
   // Frontend integration: Vite middleware in development, static files in production
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa',
     });
     app.use(vite.middlewares);
-  } else {
+  } else if (!process.env.VERCEL) {
     app.use(express.static(path.resolve(__dirname, 'dist')));
     app.get('*', (_req, res) => {
       res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
     });
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`SeedGrow Server running with PostgreSQL on port ${PORT}`);
+  if (!process.env.VERCEL) {
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`SeedGrow Server running with PostgreSQL on port ${PORT}`);
+    });
+  }
+}
+
+if (!process.env.VERCEL) {
+  startServer().catch((err) => {
+    console.error('Failed to start server:', err);
   });
 }
 
-startServer().catch((err) => {
-  console.error('Failed to start server:', err);
-});
+export default app;
 
 function getContextualActions(query: string) {
   const lower = query.toLowerCase();

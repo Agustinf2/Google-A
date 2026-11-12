@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.ts" },
+    { "source": "/pitch-deck", "destination": "/pitch-deck.html" },
+    { "source": "/defensa", "destination": "/pitch-deck.html" },
+    { "source": "/descargas-academicas", "destination": "/descargas-academicas.html" },
+    { "source": "/descargas", "destination": "/descargas-academicas.html" },
+    { "source": "/entregas-uai", "destination": "/descargas-academicas.html" },
+    { "source": "/descargar-word", "destination": "/Faucetta_Agustin_SAP_SeedAndGrow_UAI.docx" },
+    { "source": "/descargar-excel", "destination": "/Faucetta_Agustin_SAP_Plan_Financiero_SeedAndGrow.xlsx" },
+    { "source": "/api/download/uai-thesis", "destination": "/Faucetta_Agustin_SAP_SeedAndGrow_UAI.docx" },
+    { "source": "/api/download/financial-excel", "destination": "/Faucetta_Agustin_SAP_Plan_Financiero_SeedAndGrow.xlsx" },
+    { "source": "/api/download/uai-excel", "destination": "/Faucetta_Agustin_SAP_Plan_Financiero_SeedAndGrow.xlsx" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
