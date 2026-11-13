@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { ScreenView, UserRole, Project, Investment, UserAccount, KycData } from './types';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -397,6 +398,9 @@ export default function App() {
         onNavigate={handleNavigate}
         onOpenLegalFaq={() => setLegalFaqModalOpen(true)}
       />
+
+      {/* Vercel Speed Insights */}
+      <SpeedInsights />
     </div>
   );
 }
